@@ -34,4 +34,5 @@ protected:
 public:
 	CEdit strMessage;
 	CRichEditCtrl listMessage;
+	afx_msg void OnBnClickedOk();
 };

@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CtutorialDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDOK, &CtutorialDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -100,7 +101,8 @@ BOOL CtutorialDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-
+	listMessage.ReplaceSel("Welcome to chatting room\n");
+	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -153,3 +155,20 @@ HCURSOR CtutorialDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CtutorialDlg::OnBnClickedOk()
+{
+	TCHAR strBuf[100];
+	TCHAR temp[100];
+	
+	strMessage.GetWindowText(strBuf, 100);
+
+	int nlen;
+	nlen = listMessage.GetWindowTextLength();
+	listMessage.SetSel(nlen, nlen);
+	sprintf(temp, "ID : %s\n", strBuf);
+
+	listMessage.ReplaceSel(temp);
+	strMessage.SetWindowText(_T(""));
+}
