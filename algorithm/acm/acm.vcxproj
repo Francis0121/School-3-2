@@ -81,6 +81,8 @@
     <ClCompile Include="euclid_algorithm.cpp" />
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="hong.cpp" />
+    <ClCompile Include="knightRecursive.cpp" />
+    <ClCompile Include="knightStack.cpp" />
     <ClCompile Include="KnightTour.cpp" />
     <ClCompile Include="order.cpp" />
     <ClCompile Include="parenthesis.cpp" />
