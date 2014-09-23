@@ -1,26 +1,43 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-#define BUFSIZE 512
+#define NAMELENGTH 41
+
+char namebuf[NAMELENGTH];
+int infile = -1;
+
+char *getoccupier(int roomno){
+	off_t offset;
+	ssize_t nread;
+	
+	if(infile == -1 && (infile = open("residents", O_RDONLY)) == -1)
+		return (NULL);
+	
+	offset = (roomno - 1) * NAMELENGTH;
+	
+	if(lseek(infile, offset, SEEK_SET) == -1)
+		return (NULL);
+
+	if((nread = read(infile, namebuf, NAMELENGTH)) <= 0)
+		return (NULL);
+	
+	namebuf[nread-1] = '\0';
+	return (namebuf);
+}
+
+#define NROOMS 10
 
 int main(void){
-	char buffer[BUFSIZE];
-	int filedes;
-	ssize_t nread;
-	int total=0;
+	int j;
+	char *getoccupier(int), *p;
 
-	if((filedes=open("anotherfile", O_RDONLY))==-1){
-		printf("Error in opening anotherfile\n");
-		exit(1);	
-	}		
-
-	while((nread=read(filedes, buffer, BUFSIZE))>0){
-		total+=nread;
+	for(j=1; j<=NROOMS; j++){
+		if(p=getoccupier(j))
+			printf("Room %2d, %s\n", j, p);
+		else
+			printf("Error on room %d\n", j);	
 	}
-
-	printf("Total chars in anotherfile: %d\n", total);
 
 	return 0;
 }
