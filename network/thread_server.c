@@ -69,7 +69,9 @@ int main(int argc, char **argv) // (현실 Ex) 은행의 Ticket Machine
     clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_addr,&clnt_addr_size);// 전담 창구를 배정받는 순서 새로운 손님한명을 받는다.
                                                             // 2 : 전담 직원이 새로운 client Information (IP 주소, Port, Name etc)
 
-   pthread_mutex_lock(&mutx); // ~ Mutex  이용 자물쇠 잠금 임시 대기줄(한명만 들어가게된다) critical Section이라 부름 (OS..)
+	// 이 부분에서 최대의 크기가 인원이 10인데 여기서 10이상의 사람이 접속하게되면
+	// 에러가 발생하도록 에러 핸들링을 해주어야 한다.
+	pthread_mutex_lock(&mutx); // ~ Mutex  이용 자물쇠 잠금 임시 대기줄(한명만 들어가게된다) critical Section이라 부름 (OS..)
     clnt_socks[clnt_number++]=clnt_sock; // 신규 고객에 대한 접속자 수를 +1
     pthread_mutex_unlock(&mutx);
 
@@ -80,6 +82,7 @@ int main(int argc, char **argv) // (현실 Ex) 은행의 Ticket Machine
   return 0;
 }
 
+// 각각의 thread로 실행되기 때문에 지역변수는 각 thread별소 생성되며 공유되지 않는다.
 void * clnt_connection(void *arg)// thread로 돌아가는중!
 {
   int clnt_sock= (int)arg;// socket id 값, Socket 변수로 재해석 하도록함.  
