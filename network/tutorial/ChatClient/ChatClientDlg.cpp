@@ -54,6 +54,15 @@ CChatClientDlg::CChatClientDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+CChatClientDlg::CChatClientDlg(CClientSocket *pclient_socket, TCHAR *id)
+	: CDialogEx(CChatClientDlg::IDD, NULL)
+{
+	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_client_socket = pclient_socket;
+	m_client_socket->setdlg(this);
+	p_id = id;
+}
+
 void CChatClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -101,7 +110,6 @@ BOOL CChatClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	edit_list.ReplaceSel("Welcome to chatting room\n");
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -168,9 +176,47 @@ void CChatClientDlg::OnBnClickedOk()
 	int nlen;
 	nlen = edit_list.GetWindowTextLength();
 	edit_list.SetSel(nlen, nlen);
-	sprintf(temp, "ID : %s\n", strBuf);
+	sprintf(temp, "%s : %s\n", p_id, strBuf);
+	m_client_socket->Send(temp, strlen(temp));
 
 	edit_list.ReplaceSel(temp);
 	edit_text.SetWindowTextA(_T(""));
 
+}
+
+void CChatClientDlg::ProcessReceive(void){
+	int nRead;
+	int nlen;
+	TCHAR rcvBuffer[1024];
+	CString strBuffer = _T("");
+
+	nRead = m_client_socket->Receive(rcvBuffer, 1024);
+	strBuffer = rcvBuffer;
+
+	nlen = edit_list.GetWindowTextLength();
+	edit_list.SetSel(nlen, nlen);
+	edit_list.ReplaceSel(strBuffer.Left(nRead));
+}
+
+void CChatClientDlg::ProcessClose(void){
+	int nlen;
+	nlen = edit_list.GetWindowTextLength();
+	edit_list.SetSel(nlen, nlen);
+	edit_list.ReplaceSel(_T("서버가 종료되었습니다.\n"));
+
+	m_client_socket->Close();
+	delete m_client_socket;
+
+	nlen = edit_list.GetWindowTextLength();
+	edit_list.SetSel(nlen, nlen);
+	edit_list.ReplaceSel(_T("연결 종료\n"));
+}
+
+
+BOOL CChatClientDlg::DestroyWindow()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	m_client_socket->Close();
+	delete m_client_socket;
+	return CDialogEx::DestroyWindow();
 }

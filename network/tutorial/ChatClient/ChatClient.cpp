@@ -6,6 +6,7 @@
 #include "ChatClient.h"
 #include "ChatClientDlg.h"
 #include "ChatConnector.h"
+#include "ClientSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,10 +76,12 @@ BOOL CChatClientApp::InitInstance()
 	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 응용 프로그램 마법사에서 생성된 응용 프로그램"));
-
-	CChatConnector cdlg;
+	
+	CClientSocket *p_client_socket = new CClientSocket();
+	TCHAR id[20] = {0};
+	CChatConnector cdlg(p_client_socket, id);
 	if(IDOK == cdlg.DoModal()){
-		CChatClientDlg dlg;
+		CChatClientDlg dlg(p_client_socket, id);
 		m_pMainWnd = &dlg;
 		INT_PTR nResponse = dlg.DoModal();
 		if (nResponse == IDOK)
