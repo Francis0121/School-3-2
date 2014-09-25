@@ -17,8 +17,8 @@ char *stack[MAX];
 
 struct grammar {
 	int nGS;
-	char lhs[30];
-	char rhs[30][5][10];
+	char lhs[30];	// left hand side
+	char rhs[30][5][10];	// right hand side
 } CFG;	/* context-free grammar */
 
 void push(char *s)
@@ -58,6 +58,9 @@ int is_stack_empty()
 	return (top <= 0);
 }
 
+/*********************************
+*	Load Context Free grammar
+**********************************/
 int load_CFG(struct grammar *cfg)
 {
 	FILE *fp;
@@ -78,7 +81,7 @@ int load_CFG(struct grammar *cfg)
 		}
 
 		cfg->lhs[i] = *p;	/* LHS */
-		if (line[5] == '@')	/* RHS */
+		if (line[5] == '@')	/* RHS Reft Hand side epsilon Only index 5 */
 			cfg->rhs[i][j++][0] = '@';	/* epsilon */
 		else strcpy(cfg->rhs[i][j++], p+5);
 		cfg->rhs[i][j][0] = '\0';
@@ -88,7 +91,9 @@ int load_CFG(struct grammar *cfg)
 
 	return 0;
 }
-
+/***********************************
+*	Print context free grammar
+***********************************/
 void print_CFG(struct grammar *cfg)
 {
 	int i, j;
