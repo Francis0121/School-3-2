@@ -1,5 +1,5 @@
 # File Name
-NAME = dfa
+NAME = dfa_file
 
 # Current Directory
 CURDIR = ./
