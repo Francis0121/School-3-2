@@ -5,8 +5,8 @@
 
 int ST_TAB[STATES][SYMBOLS] = {
 	{1, 0}, // state P
-	{2, 0}, // state q
-	{2, 2}	// state r
+	{0, 2}, // state q
+	{-1, 1}	// state r
 };
 
 void put_table(int tab[][SYMBOLS], int m, int n){
