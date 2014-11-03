@@ -8,11 +8,11 @@
 
 enum my_number {
 	MY_EOF, MY_IDENTIFIER, MY_NUMBER, MY_ERROR,
-	TYPE_VOID, TYPE_INT, TYPE_FLOAT, TYPE_DOUBLE, TYPE_CHAR,
+	TYPE_VOID, TYPE_INT, TYPE_FLOAT, TYPE_DOUBLE, TYPE_CHAR, 
 	ST_BEGIN, ST_END, ST_DO, ST_WHILE, ST_IF, ST_ELSE, ST_SWITCH, ST_CASE, ST_FOR,
-	ST_COMA, ST_COLON, ST_SEMICOLON, ST_DOT,
+	ST_COMA, ST_COLON, ST_SEMICOLON, ST_DOT, ST_DEFAULT,
 	JP_BREAK, JP_CONTINUE, JP_RETURN,
-	OP_PLUS, OP_MINUS, OP_MUL, OP_DIV, OP_REMAIN,
+	OP_PLUS, OP_MINUS, OP_MUL, OP_DIV, OP_REMAIN, OP_PLUSS, OP_MINUSS,
 	OP_EQUAL, OP_NEQUAL, OP_LESS, OP_LESSE, OP_GREAT, OP_GREATE,
 	AS_DEFAULT, AS_PLUS, AS_MINUS, AS_MUL, AS_DIV, AS_REMAIN,
 	ARRAY_BEGIN, ARRAY_END,
@@ -38,6 +38,8 @@ digit	[0-9]
 "<="		return(OP_LESSE);
 ">"		return(OP_GREAT);
 ">="		return(OP_GREATE);
+"++"		return(OP_PLUSS);
+"--"		return(OP_MINUSS);
 
 "="		return(AS_DEFAULT);
 "+="		return(AS_PLUS);
@@ -65,6 +67,7 @@ else		return(ST_ELSE);
 switch		return(ST_SWITCH);
 case		return(ST_CASE);
 for		return(ST_FOR);
+default		return(ST_DEFAULT);
 
 break		return(JP_BREAK);
 continue	return(JP_CONTINUE);
@@ -99,7 +102,7 @@ main()
 			printf("에러 --line %d : [%c]\n", LineNumber, yytext[0]);
 			break;
 		default:
-			printf("\t(%2i, 0)\n", my);
+			printf("\t(%2i, %s)\n", my, yytext);
 		}	
 	}
 }
