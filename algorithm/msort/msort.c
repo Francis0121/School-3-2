@@ -162,25 +162,6 @@ int main(void){
 	in = fopen("input.txt", "r");
 	fscanf(in, "%d", &numTestCase);
 	
-	#define TEMP_SIZE 100
-
-	for (i=0;i<TEMP_SIZE;i++){ 
-		arrSort[i]=rand()%TEMP_SIZE;
-	}
-
-	for (i=0;i<TEMP_SIZE;i++){
-		printf("%d ", arrSort[i]);
-	}
-	printf("\n");
-
-	msort(arrSort, TEMP_SIZE, sizeof(int), icompare);
-
-	for (i=0; i<TEMP_SIZE; i++){
-		printf("%d ", arrSort[i]);
-	} 
-	printf("\n");
-	printf("\n");
-
 	while(numTestCase--){
 		fscanf(in, "%d", &sizeSort);
 		
