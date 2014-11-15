@@ -83,28 +83,31 @@ void ImageView::PicView(){
 		CImage cimage;
 		cimage.Load(filepath);
 		
-		CBitmap bmp;
-		bmp.Attach(cimage.Detach());
+		CBitmap *bmp = new CBitmap();
+		bmp->Attach(cimage.Detach());
 		
 		BITMAP bi;
-		bmp.GetBitmap(&bi);
+		bmp->GetBitmap(&bi);
 		
 		int data_size = bi.bmWidth * bi.bmHeight;
 		char *p_bit_pattern = new char[data_size]; 
 		// h_bitmap은 현재 생성된 비트맵 객체의 핸들이라고 가정...
-		GetBitmapBits(bmp, data_size, p_bit_pattern);
+		GetBitmapBits(*bmp, data_size, p_bit_pattern);
 
 		CData *pData = new CData();
 		pData->setMode(NET_IMAGE);
 		CSocketFile file(m_image_socket);
 		CArchive arOut(&file, CArchive::store);
-		int i;
+		/*int i;
 		for(i=0; i<data_size/200; i++){
 			pData->setImage(p_bit_pattern+i*200, 200);
 			pData->Serialize(arOut);	
 		}
-		pData->setImage(p_bit_pattern+i*200, data_size%200);
+		pData->setImage(p_bit_pattern+i*200, data_size%200);*/
+		pData->setBitmap(bmp);
 		pData->Serialize(arOut);	
+		
+		//bmp.Serialize(arOut);
 	}
 }
 

@@ -42,6 +42,10 @@ void CData::setImage(char *pimage, int size){
 	m_imageSize = size;
 }
 
+void CData::setBitmap(CBitmap *pbitmap){
+	m_pbitmap = pbitmap;
+}
+
 // CData ¸â¹ö ÇÔ¼ö
 void CData::Serialize( CArchive& archive )
 {
@@ -60,8 +64,10 @@ void CData::Serialize( CArchive& archive )
 			break;
 		case NET_IMAGE:
 			archive << (int) NET_IMAGE;
-			archive << m_imageSize;
-			archive << m_image;
+			m_pbitmap->Serialize(archive);
+			//m_bitmap.Serialize(archive);
+			//archive << m_imageSize;
+			//archive << m_image;
 		default:
 			break;
 		}
@@ -78,8 +84,9 @@ void CData::Serialize( CArchive& archive )
 		case NET_ERASE:
 			break;
 		case NET_IMAGE:
-			archive >> m_imageSize;
-			archive >> *m_image;
+			//m_pbitmap->Serialize(archive);
+			//archive >> m_imageSize;
+			//archive >> *m_image;
 			break;
 		}
 	}

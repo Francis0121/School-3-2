@@ -14,12 +14,14 @@ public:
 	int m_mode;
 	int m_imageSize;
 	char m_image[200];
+	CBitmap *m_pbitmap;
 	CData();
 	CData(CPoint ptPos, COLORREF crColor, int m_line);
 	CData(CData& data);
 	void setMode(int mode);
 	void setImageSize(int image);
 	void setImage(char *pimage, int size);
+	void setBitmap(CBitmap *pbitmap);
 	virtual ~CData();
 
 	void Serialize( CArchive& archive );
