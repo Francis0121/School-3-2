@@ -1,6 +1,24 @@
-/*****************************************
+/******************************************
 *	
 *	20093267 컴퓨터공학부 3학년 김성근
+*
+*******************************************/
+/******************************************
+*	
+* 구현
+* qsort.c를 참고하여 qsort에 있던 Insertion sort와
+* stack의 구조를 이용하여 구현하였습니다.
+*
+* qsort 예제 소스에서 MAX_THRESH의 값이 4이였기 때문에 
+* merge sort에서도 MAX_THRESH값을 동일하게 4로 적용하였고
+*
+* 기존에 있던 재귀적인 merge방법을 for문 2개를 이용하여
+* merge를 시키도록 구현하였습니다.
+*
+* 또한 merge 과정에서 merge과정을 수행하는 데이터 배열의 크기가 
+* MAX_THRESH보다 작다면 sorting이 느리다고 판단하여 해당되는 
+* 데이터 크기이 대해서는 먼저 insertion sorting을 시킨뒤에
+* merge하도록 구현하였습니다.
 *
 *******************************************/
 #include <stdio.h>
@@ -9,7 +27,7 @@
 #include <math.h>
 
 // ~ Byte-wise swap two items of size SIZE.
-// ~ Byte 단위 swap 정의
+// ~ Byte 단위 swap 정의 (qsort code)
 #define SWAP(a, b, size) \
 do{ \
 	register size_t __size = (size); \
@@ -21,13 +39,13 @@ do{ \
 	} while (--__size > 0); \
 } while (0)
 
-// ~ 입력 받은 x,y 값 중 더 작은 값 리턴
+// ~ 입력 받은 x,y 값 중 더 작은 값 리턴 (qsort code)
 #define msort_min(x, y) ((x) < (y) ? (x) : (y))
 	
 #define MAX_SIZE 101
 
 // ~ Discontinue quicksort algorithm when partition gets below this size.
-// ~ Quick sort 와 동일하게 size 가 4이하일 경우에는 Merge Sort 하지 않도록 함
+// ~ Quick sort 와 동일하게 size 가 4이하일 경우에는 Merge Sort 하지 않도록 함 (qsort code)
 #define MAX_THRESH 4
 
 /**
@@ -55,10 +73,11 @@ void msort (void *base, size_t total_elems, size_t size, int (*cmp)(const void *
 	size_t block, start, mid, end;
 	size_t i, j, m;
 
-	// ~ 배열에 저장된 자료의 개수가 0일 때는 정렬할 것이 없음으로 바로 리턴한다.
+	// ~ 배열에 저장된 자료의 개수가 0일 때는 정렬할 것이 없음으로 바로 리턴한다. 
 	if(total_elems == 0)
 		return;
 
+	// ~ Insertion Sort (qsort code)
 	// ~ MAX_TRHESH 4로두고 4보다 작은 집합에 대해서는 Insertion sort를 수행하게 한다.
 	for (i = 0; i < (total_elems / MAX_THRESH + 1); i++ ){
 		char *const end_ptr = base_ptr + (((i + 1) *  MAX_THRESH - 1) * size);
@@ -121,6 +140,7 @@ void msort (void *base, size_t total_elems, size_t size, int (*cmp)(const void *
             m = start, i = start, j = mid; 
 
 			// ~ Merge 수행 Combine
+			// ~ 두 배열의 값의 크기를 비교해가며 임시 배열에 데이터 복사
             while (i < mid && j < end) { 
                 if ((*cmp) ((void *) left_ptr, (void *) right_ptr) < 0) {         
 					memcpy(temp_buffer + (m*size), left_ptr, size);
@@ -131,17 +151,17 @@ void msort (void *base, size_t total_elems, size_t size, int (*cmp)(const void *
                 }
                 m++;
             }
-			
+			// ~ 왼쪽 배열에 남은 배열을 임시 배열로 복사
             if (i < mid) { 
 				memcpy(temp_buffer + (m * size), left_ptr, (mid - i) * size);
 				left_ptr += (mid- i) * size;
             }
-
+			// ~ 오른쪽 배열에 남은 배열을 임시 배열로 복사
             if (j < end) { 
 				memcpy(temp_buffer + (m * size), right_ptr, (end - j) * size );
 				right_ptr += (end - j) * size;
             }
-
+			// ~ 임시 배열을 원래 배열로 복사
 			memcpy(base_ptr + (start * size), temp_buffer + (start * size), size * (end - start));
         }
     }
