@@ -94,10 +94,6 @@ void ImageView::PicView(){
 		// h_bitmap은 현재 생성된 비트맵 객체의 핸들이라고 가정...
 		GetBitmapBits(bmp, data_size, p_bit_pattern);
 
-		CBitmap newBmp;
-		SetBitmapBits(newBmp, data_size, p_bit_pattern);
-		image = new Image(p_bit_pattern, false);
-
 		CData *pData = new CData();
 		pData->setMode(NET_IMAGE);
 		CSocketFile file(m_image_socket);
