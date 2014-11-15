@@ -142,7 +142,7 @@ void *do_image(void *arg){
 		memset(chatData, 0, sizeof(chatData));
 		if((n = read(c_socket, chatData, sizeof(chatData))) > 0)
 		{
-			printf("%d\n", n);
+//			printf("%d\n", n);
 			for(i = 0; i < MAX_CLIENT; i++)
 				if(list_c_i[i] != INVALID_SOCK && list_c_i[i] != c_socket)
 					write(list_c_i[i], chatData, n);
