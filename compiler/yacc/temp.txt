@@ -1,0 +1,104 @@
+type:
+        TYPE_VOID |
+        TYPE_INT |
+        TYPE_CHAR |
+        TYPE_FLOAT |
+        TYPE_DOUBLE
+        ;
+
+id_list:
+        id_list ST_COMA init_id |
+        init_id
+        ;
+
+init_id:
+        MY_IDENTIFIER |
+        MY_IDENTIFIER AS_DEFAULT initializer
+        ;
+
+initializer:
+        MY_LETTER |
+        MY_NUMBER
+        ;
+
+statements:
+        bracket_stat { printf("braket_stat"); } |
+        express_stat { printf("express_stat"); } |
+        label_stat { printf("label"); } |
+        selection_stat { printf("selection"); } |
+        iter_stat { printf("iter"); } |
+        jump_stat { printf("jump"); }
+        ;
+
+label_stat:
+        MY_IDENTIFIER ST_COLON statements |
+        ST_CASE constant ST_COLON statements |
+        ST_DEFAULT ST_COLON statements
+        ;
+
+constant:
+        MY_NUMBER constant |
+        MY_NUMBER
+        ;
+
+selection_stat:
+        ST_IF ARGU_BEGIN expression ARGU_END statements |
+        ST_IF ARGU_BEGIN expression ARGU_END statements ST_ELSE statements |
+        ST_SWITCH ARGU_BEGIN expression ARGU_END statements
+        ;
+
+iter_stat:
+        ST_WHILE ARGU_BEGIN expression ARGU_END statements |
+        ST_DO statements ST_WHILE ARGU_BEGIN expression ARGU_END ST_SEMICOLON |
+        ST_FOR ARGU_BEGIN expression ST_SEMICOLON expression ST_SEMICOLON expression ARGU_END statements
+        ;
+
+jump_stat:
+        JP_CONTINUE |
+        JP_BREAK |
+        JP_RETURN expression ST_SEMICOLON
+        ;
+
+bracket_stat:
+        ST_BEGIN statements ST_END
+        ;
+
+express_stat:
+        expression ST_COLON
+        ;
+
+expression:
+        assignment_expression |
+        expression ST_COMA assignment_expression
+        ;
+
+assignment_expression:
+        nexpression assignment_operator assignment_expression
+        ;
+
+nexpression:
+        MY_IDENTIFIER num_operator MY_IDENTIFIER
+        ;
+
+assignment_operator:
+        AS_DEFAULT |
+        AS_PLUS |
+        AS_MINUS |
+        AS_MUL |
+        AS_DIV |
+        AS_REMAIN
+        ;
+
+num_operator:
+        OP_PLUS |
+        OP_MINUS |
+        OP_MUL |
+        OP_DIV |
+        OP_REMAIN |
+        OP_EQUAL |
+        OP_NEQUAL |
+        OP_LESS |
+        OP_LESSE |
+        OP_GREAT |
+        OP_GREATE
+        ;
