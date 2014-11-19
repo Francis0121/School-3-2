@@ -17,81 +17,171 @@
 %token ARGU_BEGIN ARGU_END
 %%
 
-statements:
-        bracket_stat { printf("braket_stat"); } |
-        express_stat { printf("express_stat"); } |
-        label_stat { printf("label"); } |
-        iter_stat { printf("iter"); } |
-        jump_stat { printf("jump"); }
-        ;
+primary_expression
+	: IDENTIFIER
+	| constant
+	| string
+	| '(' expression ')'
+	| generic_selection
+	;
 
-label_stat:
-        MY_IDENTIFIER ST_COLON statements |
-        ST_CASE constant ST_COLON statements |
-        ST_DEFAULT ST_COLON statements
-        ;
+constant
+	: I_CONSTANT		/* includes character_constant */
+	| F_CONSTANT
+	| ENUMERATION_CONSTANT	/* after it has been defined as such */
+	;
 
-constant:
-        MY_NUMBER constant |
-        MY_NUMBER
-        ;
+enumeration_constant		/* before it has been defined as such */
+	: IDENTIFIER
+	;
 
-iter_stat:
-        ST_WHILE ARGU_BEGIN expression ARGU_END statements |
-        ST_DO statements ST_WHILE ARGU_BEGIN expression ARGU_END ST_SEMICOLON |
-        ST_FOR ARGU_BEGIN expression ST_SEMICOLON expression ST_SEMICOLON expression ARGU_END statements
-        ;
+string
+	: STRING_LITERAL
+	| FUNC_NAME
+	;
 
-jump_stat:
-        JP_CONTINUE |
-        JP_BREAK |
-        JP_RETURN expression ST_SEMICOLON
-        ;
+generic_selection
+	: GENERIC '(' assignment_expression ',' generic_assoc_list ')'
+	;
 
+generic_assoc_list
+	: generic_association
+	| generic_assoc_list ',' generic_association
+	;
 
-bracket_stat:
-        ST_BEGIN statements ST_END
-        ;
+generic_association
+	: type_name ':' assignment_expression
+	| DEFAULT ':' assignment_expression
+	;
 
-express_stat:
-        expression ST_COLON
-        ;
+postfix_expression
+	: primary_expression
+	| postfix_expression '[' expression ']'
+	| postfix_expression '(' ')'
+	| postfix_expression '(' argument_expression_list ')'
+	| postfix_expression '.' IDENTIFIER
+	| postfix_expression PTR_OP IDENTIFIER
+	| postfix_expression INC_OP
+	| postfix_expression DEC_OP
+	| '(' type_name ')' '{' initializer_list '}'
+	| '(' type_name ')' '{' initializer_list ',' '}'
+	;
 
-expression:
-        assignment_expression |
-        expression ST_COMA assignment_expression
-        ;
+argument_expression_list
+	: assignment_expression
+	| argument_expression_list ',' assignment_expression
+	;
 
-assignment_expression:
-        nexpression assignment_operator assignment_expression
-        ;
+unary_expression
+	: postfix_expression
+	| INC_OP unary_expression
+	| DEC_OP unary_expression
+	| unary_operator cast_expression
+	| SIZEOF unary_expression
+	| SIZEOF '(' type_name ')'
+	| ALIGNOF '(' type_name ')'
+	;
 
-nexpression:
-        MY_IDENTIFIER num_operator MY_IDENTIFIER
-        ;
+unary_operator
+	: '&'
+	| '*'
+	| '+'
+	| '-'
+	| '~'
+	| '!'
+	;
 
-assignment_operator:
-        AS_DEFAULT |
-        AS_PLUS |
-        AS_MINUS |
-        AS_MUL |
-        AS_DIV |
-        AS_REMAIN
-        ;
+cast_expression
+	: unary_expression
+	| '(' type_name ')' cast_expression
+	;
 
-num_operator:
-        OP_PLUS |
-        OP_MINUS |
-        OP_MUL |
-        OP_DIV |
-        OP_REMAIN |
-        OP_EQUAL |
-        OP_NEQUAL |
-        OP_LESS |
-        OP_LESSE |
-        OP_GREAT |
-        OP_GREATE
-        ;
+multiplicative_expression
+	: cast_expression
+	| multiplicative_expression '*' cast_expression
+	| multiplicative_expression '/' cast_expression
+	| multiplicative_expression '%' cast_expression
+	;
+
+additive_expression
+	: multiplicative_expression
+	| additive_expression '+' multiplicative_expression
+	| additive_expression '-' multiplicative_expression
+	;
+
+shift_expression
+	: additive_expression
+	| shift_expression LEFT_OP additive_expression
+	| shift_expression RIGHT_OP additive_expression
+	;
+
+relational_expression
+	: shift_expression
+	| relational_expression '<' shift_expression
+	| relational_expression '>' shift_expression
+	| relational_expression LE_OP shift_expression
+	| relational_expression GE_OP shift_expression
+	;
+
+equality_expression
+	: relational_expression
+	| equality_expression EQ_OP relational_expression
+	| equality_expression NE_OP relational_expression
+	;
+
+and_expression
+	: equality_expression
+	| and_expression '&' equality_expression
+	;
+
+exclusive_or_expression
+	: and_expression
+	| exclusive_or_expression '^' and_expression
+	;
+
+inclusive_or_expression
+	: exclusive_or_expression
+	| inclusive_or_expression '|' exclusive_or_expression
+	;
+
+logical_and_expression
+	: inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression
+	;
+
+logical_or_expression
+	: logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression
+	;
+
+conditional_expression
+	: logical_or_expression
+	| logical_or_expression '?' expression ':' conditional_expression
+	;
+
+assignment_expression
+	: conditional_expression
+	| unary_expression assignment_operator assignment_expression
+	;
+
+assignment_operator
+	: '='
+	| MUL_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
+	| ADD_ASSIGN
+	| SUB_ASSIGN
+	| LEFT_ASSIGN
+	| RIGHT_ASSIGN
+	| AND_ASSIGN
+	| XOR_ASSIGN
+	| OR_ASSIGN
+	;
+
+expression
+	: assignment_expression
+	| expression ',' assignment_expression
+	;
 
 %%
 
