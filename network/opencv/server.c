@@ -192,7 +192,6 @@ void *do_image(void *arg){
 		memset(chatData, 0, sizeof(chatData));
 		if((n = read(c_socket, chatData, sizeof(chatData))) > 0)
 		{
-			printf("%d\n", n);
 			for(i = 0; i < MAX_CLIENT; i++)
 				if(list_c_i[i] != INVALID_SOCK && list_c_i[i] != c_socket)
 					write(list_c_i[i], chatData, n);
@@ -231,14 +230,16 @@ void *do_chat(void *arg)
 void *do_cam(void *arg)
 {
 	int c_socket = (int)arg;
-	char chatData[CHATDATA];
+	char chatData[2048];
 	int i, n;
 
+	printf("Cam streming start\n");
 	while(1)
 	{
 		memset(chatData, 0, sizeof(chatData));
 		if((n = read(c_socket, chatData, sizeof(chatData))) != 0)
 		{
+			printf("%d\n", n);
 			for(i = 0; i < MAX_CLIENT; i++)
 				if(list_c_c[i] != INVALID_SOCK && list_c_c[i] != c_socket)
 					write(list_c_c[i], chatData, n);

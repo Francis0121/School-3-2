@@ -64,6 +64,7 @@ CChatClientDlg::CChatClientDlg(CClientSocket *pclient_socket, CImageSocket *pima
 	m_image_socket = pimage_socket;
 	// ~ cam 추가
 	m_cam_socket = pcam_socket;
+	m_cam_socket->setdlg(this);
 	p_id = id;
 }
 
@@ -308,6 +309,17 @@ void CChatClientDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	m_Image = cvQueryFrame(m_capture);
+
+	std::vector<uchar>outbuf;
+	std::vector<int> params;
+	params.push_back(CV_IMWRITE_JPEG_QUALITY);
+	params.push_back(1);
+	cv::Mat mat = cv::cvarrToMat(m_Image);
+	/*cv::imencode(".jpg", mat, outbuf, params);
+	
+	int bytelen = outbuf.size();	
+	m_cam_socket->Send(outbuf.data(), bytelen); 
+*/
 	Invalidate(FALSE);
 
 	CDialogEx::OnTimer(nIDEvent);
@@ -323,4 +335,17 @@ void CChatClientDlg::OnDestroy()
 	
 	if(m_capture)
 		cvReleaseCapture(&m_capture);
+}
+
+void CChatClientDlg::CamReceive(void){
+
+	int nRead;
+	TCHAR rcvBuffer[1024];
+	nRead = m_cam_socket->Receive(rcvBuffer, 1024);
+	
+}
+
+void CChatClientDlg::CamClose(void){
+	m_cam_socket->Close();
+	delete m_cam_socket;
 }

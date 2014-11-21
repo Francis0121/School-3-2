@@ -53,6 +53,10 @@ public:
 	afx_msg void OnBnClickedOk();
 	void ProcessReceive(void);
 	void ProcessClose(void);
+	// ~ Cam
+	void CamReceive(void);
+	void CamClose(void);
+
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedButtonColor();
 	afx_msg void OnBnClickedButtonLoad();
@@ -71,6 +75,7 @@ public:
 	IplImage* m_Image;
 	CvvImage m_cImage;
 	CvCapture* m_capture;
+	// ~ Opencv ฐüทร Cam Function
 	afx_msg void OnBnClickedCamStart();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
