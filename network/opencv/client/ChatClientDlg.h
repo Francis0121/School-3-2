@@ -74,9 +74,14 @@ public:
 	// ~ Opencv 관련 Member variable
 	IplImage* m_Image;
 	CvvImage m_cImage;
+
+	IplImage* m_ImageYou;
+	CvvImage m_cImageYou;
+
 	CvCapture* m_capture;
 	// ~ Opencv 관련 Cam Function
 	afx_msg void OnBnClickedCamStart();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
+
 };

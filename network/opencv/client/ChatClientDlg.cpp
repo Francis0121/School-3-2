@@ -197,7 +197,46 @@ void CChatClientDlg::OnPaint()
 		m_cImage.CopyOf(m_Image);
 		m_cImage.DrawToHDC(pDC->m_hDC, cam_rect);
 
+		if(!m_ImageYou){
+			pDC = m_ctrlPicYou.GetDC();
+			m_ctrlPicYou.GetClientRect(cam_rect);
+
+			m_cImageYou.CopyOf(m_ImageYou);
+			m_cImageYou.DrawToHDC(pDC->m_hDC, cam_rect);
+		}
+
 		ReleaseDC(pDC);
+
+
+		// ~ imencode 가 계속적인 에러로 file로 output
+		/*std::vector<int> params;
+		params.push_back(CV_IMWRITE_JPEG_QUALITY);
+		params.push_back(30);
+		cv::Mat mat(m_Image);
+		std::vector<uchar> outbuf;
+		cv::imencode("jpg", mat, outbuf, params);
+		int bytelen = outbuf.size();
+		m_cam_socket->Send(outbuf.data(), bytelen);*/
+
+		// ~ Extract Image Test
+		int p[3];
+		p[0] = CV_IMWRITE_JPEG_QUALITY;
+		p[1] = 10;
+		p[2] = 0;
+		cvSaveImage("0.jpg", m_Image, p);
+
+		IplImage *frame = cvLoadImage("0.jpg");
+		if(frame){
+			int bufSize = frame->imageSize;
+			int width = frame->width;
+			int height = frame->height;
+			m_cam_socket->Send(&bufSize, 4);
+			m_cam_socket->Send(&width, 4);
+			m_cam_socket->Send(&height, 4);
+			m_cam_socket->Send(frame->imageData, bufSize);
+		}
+
+
 		// CDialog::OnPaint()를 호출하지 마세요.
 		// CDialogEx::OnPaint();
 	}
@@ -209,8 +248,6 @@ HCURSOR CChatClientDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
-
 
 void CChatClientDlg::OnBnClickedOk()
 {
@@ -307,19 +344,9 @@ void CChatClientDlg::OnBnClickedCamStart()
 
 void CChatClientDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_Image = cvQueryFrame(m_capture);
-
-	std::vector<uchar>outbuf;
-	std::vector<int> params;
-	params.push_back(CV_IMWRITE_JPEG_QUALITY);
-	params.push_back(1);
-	cv::Mat mat = cv::cvarrToMat(m_Image);
-	/*cv::imencode(".jpg", mat, outbuf, params);
-	
-	int bytelen = outbuf.size();	
-	m_cam_socket->Send(outbuf.data(), bytelen); 
-*/
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.	
+	cvGrabFrame(m_capture); 
+	m_Image = cvRetrieveFrame(m_capture);
 	Invalidate(FALSE);
 
 	CDialogEx::OnTimer(nIDEvent);
@@ -339,10 +366,31 @@ void CChatClientDlg::OnDestroy()
 
 void CChatClientDlg::CamReceive(void){
 
-	int nRead;
-	TCHAR rcvBuffer[1024];
-	nRead = m_cam_socket->Receive(rcvBuffer, 1024);
-	
+	int bufSize;
+	m_cam_socket->Receive(&bufSize, 4);
+	int width;
+	m_cam_socket->Receive(&width, 4);
+	int height;
+	m_cam_socket->Receive(&height, 4);
+	char *buf;
+	buf = (char *) malloc(bufSize);
+
+	int i = 0;
+	int receiveData = 0;
+	while(receiveData < bufSize){
+		int readSize = bufSize - receiveData < 2048 ? bufSize - receiveData : 2048;
+		int read = m_cam_socket->Receive(buf + (i++ * 2048), readSize);
+		receiveData += read;
+	}
+
+	CvSize size;
+	size.height = width;
+	size.width = height;
+   
+	m_ImageYou = cvCreateImageHeader(size, IPL_DEPTH_8U, 3);
+	m_ImageYou->imageData = buf;
+
+	Invalidate(FALSE);
 }
 
 void CChatClientDlg::CamClose(void){

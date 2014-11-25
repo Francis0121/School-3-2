@@ -163,8 +163,7 @@ main(int argc, char *argv[])
 
 				len = sizeof(c_addr_c);
 				c_socket_c = accept(s_socket_c, (struct sockaddr *)&c_addr_i, &len);
-				res = pushClientImage(c_socket_c);
-
+				res = pushClientCam(c_socket_c);	
 				if(res < 0){
 					write(c_socket, CODE200, strlen(CODE200));
 					close(c_socket_i);
@@ -213,7 +212,7 @@ void *do_chat(void *arg)
 	while(1)
 	{
 		memset(chatData, 0, sizeof(chatData));
-		if((n = read(c_socket, chatData, sizeof(chatData))) != 0)
+		if((n = read(c_socket, chatData, sizeof(chatData))) > 0)
 		{
 			for(i = 0; i < MAX_CLIENT; i++)
 				if(list_c[i] != INVALID_SOCK && list_c[i] != c_socket)
@@ -237,12 +236,14 @@ void *do_cam(void *arg)
 	while(1)
 	{
 		memset(chatData, 0, sizeof(chatData));
-		if((n = read(c_socket, chatData, sizeof(chatData))) != 0)
-		{
-			printf("%d\n", n);
-			for(i = 0; i < MAX_CLIENT; i++)
-				if(list_c_c[i] != INVALID_SOCK && list_c_c[i] != c_socket)
+		if((n = read(c_socket, chatData, sizeof(chatData))) > 0){
+			printf("Read : %d\n", n);
+			for(i = 0; i < MAX_CLIENT; i++){
+				if(list_c_c[i] != INVALID_SOCK && list_c_c[i] != c_socket){
+					printf("Write %d : %d\n", c_socket, n);	
 					write(list_c_c[i], chatData, n);
+				}
+			}
 		}
 		else
 		{
