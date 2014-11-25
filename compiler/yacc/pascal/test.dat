@@ -1,4 +1,23 @@
-{
-	num= 0;
-	num= num+526;
-}
+
+id:
+        init_id { puts("----------10.3. id"); } |
+        init_id TCOMA id { puts("----------10.4. id list"); }
+        ;
+
+init_id:
+        TIDENT { puts("-----------10.5. init_id"); } |
+        TIDENT = initializer { puts("-----------10.6. initializer"); }
+        ;
+
+type:
+        TVOID { puts("-----------11.1. void"); } |
+        TINT { puts("-----------11.2. int"); } |
+        TCHAR { puts("-----------11.3. char"); } |
+        TFLOAT { puts("-----------11.4. float"); } |
+        TDOUBLE { puts("-----------11.5. double"); }
+        ;
+        
+initializer:
+        TNUMBER { puts("-----------11.6. number"); } |
+        TLETTER { puts("-----------11.7. letter"); }
+        ;

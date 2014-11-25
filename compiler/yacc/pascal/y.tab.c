@@ -80,104 +80,138 @@ extern int YYPARSE_DECL();
 #define TRBRACKET 279
 #define TIF 280
 #define TELSE 281
-#define TBREAK 282
-#define TRETURN 283
-#define TCONTINUE 284
-#define TVOID 285
-#define TINT 286
-#define TCHAR 287
-#define TFLOAT 288
-#define TDOUBLE 289
+#define TSWITCH 282
+#define TBREAK 283
+#define TRETURN 284
+#define TCONTINUE 285
+#define TVOID 286
+#define TINT 287
+#define TCHAR 288
+#define TFLOAT 289
+#define TDOUBLE 290
 #define YYERRCODE 256
 static const short yylhs[] = {                           -1,
-    0,    2,    4,    4,    5,    3,    6,    6,    6,    6,
-    6,    7,    7,    8,    8,    9,    9,    9,   10,   10,
-   10,   11,   11,   14,   13,   13,   13,   16,   16,   16,
-   16,   17,   17,   17,   17,   15,   12,    1,    1,    1,
-    1,    1,
+    0,    0,    1,    3,    3,    5,    5,    6,    6,    4,
+    7,    7,    8,    8,    8,    8,    8,    8,    8,    8,
+   14,   10,   10,   11,   11,   11,   12,   12,   12,   13,
+   13,   13,    9,    9,   15,   18,   17,   17,   17,   21,
+   21,   21,   21,   22,   22,   22,   22,   20,   16,   19,
+   19,   23,   23,   23,    2,    2,    2,    2,    2,
 };
 static const short yylen[] = {                            2,
-    4,    3,    1,    3,    2,    3,    1,    3,    1,    1,
-    1,    0,    1,    3,    4,    5,    7,    9,    1,    1,
-    2,    3,    1,    1,    3,    3,    1,    3,    3,    3,
-    1,    2,    1,    1,    3,    1,    1,    1,    1,    1,
-    1,    1,
+    1,    2,    4,    2,    3,    1,    3,    1,    2,    3,
+    1,    3,    0,    1,    1,    1,    1,    1,    1,    1,
+    4,    3,    4,    5,    8,    9,    1,    1,    2,    5,
+    7,    5,    3,    1,    2,    1,    3,    3,    1,    3,
+    3,    3,    1,    2,    1,    1,    3,    1,    1,    1,
+    3,    1,    3,    3,    1,    1,    1,    1,    1,
 };
 static const short yydefred[] = {                         0,
-   38,   39,   40,   41,   42,    0,    0,    0,    0,    0,
-    0,    0,    3,    0,    1,    5,    0,    2,    0,    0,
-    0,    0,    0,   36,   20,    0,   19,    0,    7,    9,
-   10,   11,   13,    0,   24,    4,   37,    0,    0,    0,
-    0,    0,   34,    0,    0,    0,   33,    0,   31,    6,
-    0,    0,    0,   14,    0,    0,    0,   32,    0,    0,
-    0,    0,    0,    0,    8,    0,   15,    0,    0,    0,
-   35,    0,    0,   28,   29,   30,   16,    0,    0,    0,
-    0,   17,    0,    0,   18,
+   55,   56,   57,   58,   59,    0,    0,    0,    2,    0,
+    0,    0,    4,    0,    0,    0,    6,    0,    3,    9,
+    0,    5,    0,    0,    0,    0,    0,    0,   48,    0,
+    0,   28,    0,   27,    0,    0,   11,   14,   15,   16,
+   17,   18,   19,   20,    0,   36,    7,    0,   49,    0,
+    0,    0,    0,    0,    0,    0,   46,    0,    0,    0,
+   45,    0,   43,    0,   35,    0,   10,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,   44,    0,    0,
+    0,    0,    0,    0,    0,    0,   12,    0,    0,    0,
+    0,    0,    0,    0,    0,   47,    0,    0,   40,   41,
+   42,   54,   53,   51,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,
 };
 static const short yydgoto[] = {                          6,
-   11,   10,   15,   12,   13,   28,   29,   30,   31,   32,
-   33,   38,   46,   34,   47,   48,   49,
+    7,   35,   12,   19,   16,   17,   36,   37,   38,   39,
+   40,   41,   42,   43,   44,   50,   60,   45,   65,   61,
+   62,   63,   66,
 };
-static const short yysindex[] = {                      -180,
-    0,    0,    0,    0,    0,    0, -257, -261, -180, -229,
- -226, -264,    0, -240,    0,    0, -180,    0, -219, -215,
- -220, -204, -212,    0,    0, -262,    0, -231,    0,    0,
-    0,    0,    0, -197,    0,    0,    0, -193, -204, -262,
- -179, -262,    0, -262, -262, -158,    0, -163,    0,    0,
- -204, -262, -204,    0, -260, -192, -170,    0, -191, -262,
- -262, -262, -262, -262,    0, -158,    0, -204, -262, -262,
-    0, -163, -163,    0,    0,    0,    0, -181, -168, -178,
- -262,    0, -177, -204,    0,
+static const short yysindex[] = {                       -85,
+    0,    0,    0,    0,    0,    0,  -85, -263,    0, -237,
+ -103, -199,    0,    0, -196, -265,    0, -176,    0,    0,
+  -80,    0, -176, -202, -198, -194, -176, -171,    0, -139,
+ -116,    0, -262,    0, -131, -193,    0,    0,    0,    0,
+    0,    0,    0,    0,  -98,    0,    0, -169,    0, -118,
+ -176, -262, -201, -262, -262, -262,    0, -262, -262,  -96,
+    0, -183,    0,  -86,    0, -107,    0, -176, -262, -176,
+ -176,  -89, -150,  -94,  -74, -129, -108,    0, -106, -262,
+ -262, -262, -262, -262,  -53, -131,    0,  -96,  -89,  -89,
+ -176, -262, -262, -176, -176,    0, -183, -183,    0,    0,
+    0,    0,    0,    0,  -89,  -83,  -72, -225,  -89,  -75,
+ -262, -176, -176,  -81,  -89,  -89, -176,  -89,
 };
 static const short yyrindex[] = {                         0,
+    0,    0,    0,    0,    0,    0,  215,    0,    0,    0,
+    0,    0,    0, -205,    0,    0,    0, -165,    0,    0,
+    0,    0, -165,    0,    0,    0,  -51,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0, -210,    0,    0,    0,    0,    0,    0,
-    0, -169,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0, -232,    0,    0,    0,    0, -210,    0,
-    0,    0,    0,    0,    0, -200,    0, -206,    0,    0,
- -210,    0, -210,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0, -182,    0, -210,    0,    0,
-    0, -199, -184,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0, -210,    0,
+    0,    0,    0,    0, -245,    0,    0,    0,    0,    0,
+ -240,    0,    0,    0,    0,    0,    0,    0,    0, -241,
+    0, -143,    0, -224,    0, -142,    0, -240,    0, -240,
+ -240, -214,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0, -114, -212, -210,
+ -240,    0,    0, -240, -240,    0, -141, -126,    0,    0,
+    0,    0,    0,    0, -158,    0,    0,  -88, -109,    0,
+    0, -240, -240,    0, -104, -102, -240, -100,
 };
-static const short yygindex[] = {                         0,
-   98,    0,    0,    0,   99,    0,  -21,    0,    0,    0,
-    0,    0,  -36,    0,  -14,  -20,  -13,
+static const short yygindex[] = {                       210,
+    0,    8,    0,    0,    0,  197,  -16,  151,    0,    0,
+    0,    0,    0,    0,    0,    0,  -31,    0,  134,  -18,
+  133,  -52,    0,
 };
-#define YYTABLESIZE 116
-static const short yytable[] = {                         35,
-   41,   24,   43,   55,   17,   57,    8,   35,   59,   44,
-   60,   61,   18,   45,    9,   66,   68,   54,   19,   20,
-   21,   22,   23,   24,   35,   23,   50,   14,   23,   65,
-   58,   67,   78,   79,   23,   51,   35,   16,   35,   72,
-   73,   25,   26,   27,   83,   37,   77,   12,   74,   75,
-   76,   27,   39,   35,   27,   40,   12,   21,   25,   24,
-   27,   25,   85,   42,   27,   27,   21,   25,   52,   35,
-   27,   25,   25,   26,   53,   22,   26,   25,   22,   60,
-   61,   56,   26,   69,   22,   71,   26,   26,   82,   60,
-   61,   12,   26,   60,   61,   80,   70,    7,   81,   84,
-   60,   61,   60,   61,    1,    2,    3,    4,    5,   62,
-   63,   64,   60,   61,    0,   36,
+#define YYTABLESIZE 220
+static const short yytable[] = {                         46,
+   10,   29,   57,   21,   46,   78,   48,    8,   46,   58,
+   53,   22,   34,   59,    8,   34,   29,   13,   15,   29,
+   73,   34,   75,   76,   77,   29,   13,   79,   15,   99,
+  100,  101,   46,   52,   72,   34,   52,   88,   11,   29,
+   13,   68,   52,   22,   52,   21,   22,   23,   21,   46,
+   23,   46,   46,   89,   90,  112,   52,   18,   55,   74,
+  106,  107,   49,    8,   67,   68,   22,   20,   21,   51,
+   23,    8,   46,   68,  105,   46,   46,  108,  109,  114,
+   23,   52,   24,   25,   26,   27,   28,   29,   70,   82,
+   83,   84,   13,   46,   46,  115,  116,   68,   46,   24,
+  118,   13,   24,   30,   54,   31,   32,   33,   34,    1,
+    2,    3,    4,    5,   39,   50,   37,   39,   50,   37,
+   80,   81,   24,   39,   50,   37,   91,   39,   39,   37,
+   37,   38,   64,   39,   38,   37,   55,   39,   50,   37,
+   38,   80,   81,   33,   38,   38,   33,   94,   32,   71,
+   38,   32,   33,   31,   38,   25,   31,   26,   25,   56,
+   26,   86,   80,   81,   80,   81,   33,   69,   95,   30,
+   96,   32,   30,   13,   80,   81,   31,   68,   25,   85,
+   26,   92,   14,    2,    3,    4,    5,   80,   81,   80,
+   81,  113,   93,  110,  111,  117,   80,   81,   80,   81,
+    1,    2,    3,    4,    5,   14,    2,    3,    4,    5,
+  102,  103,   97,   98,    1,   13,    9,   47,   87,  104,
 };
-static const short yycheck[] = {                         14,
-   22,  264,  265,   40,  269,   42,  264,   22,   45,  272,
-  271,  272,  277,  276,  276,   52,  277,   39,  259,  260,
-  261,  262,  263,  264,   39,  258,  258,  257,  261,   51,
-   44,   53,   69,   70,  267,  267,   51,  264,   53,   60,
-   61,  282,  283,  284,   81,  265,   68,  258,   62,   63,
-   64,  258,  268,   68,  261,  276,  267,  258,  258,  264,
-  267,  261,   84,  276,  271,  272,  267,  267,  266,   84,
-  277,  271,  272,  258,  268,  258,  261,  277,  261,  271,
-  272,  261,  267,  276,  267,  277,  271,  272,  267,  271,
-  272,  261,  277,  271,  272,  277,  267,    0,  267,  277,
-  271,  272,  271,  272,  285,  286,  287,  288,  289,  273,
-  274,  275,  271,  272,   -1,   17,
+static const short yycheck[] = {                         18,
+  264,  264,  265,  269,   23,   58,   23,    0,   27,  272,
+   27,  277,  258,  276,    7,  261,  258,  258,   11,  261,
+   52,  267,   54,   55,   56,  267,  267,   59,   21,   82,
+   83,   84,   51,  258,   51,  281,  261,   69,  276,  281,
+  281,  267,  267,  258,  269,  258,  261,  258,  261,   68,
+  261,   70,   71,   70,   71,  281,  281,  257,  264,  261,
+   92,   93,  265,  269,  258,  267,  281,  264,  281,  268,
+  281,  277,   91,  267,   91,   94,   95,   94,   95,  111,
+  257,  276,  259,  260,  261,  262,  263,  264,  258,  273,
+  274,  275,  258,  112,  113,  112,  113,  267,  117,  258,
+  117,  267,  261,  280,  276,  282,  283,  284,  285,  286,
+  287,  288,  289,  290,  258,  258,  258,  261,  261,  261,
+  271,  272,  281,  267,  267,  267,  277,  271,  272,  271,
+  272,  258,  264,  277,  261,  277,  276,  281,  281,  281,
+  267,  271,  272,  258,  271,  272,  261,  277,  258,  268,
+  277,  261,  267,  258,  281,  258,  261,  258,  261,  276,
+  261,  269,  271,  272,  271,  272,  281,  266,  277,  258,
+  277,  281,  261,  277,  271,  272,  281,  267,  281,  266,
+  281,  276,  286,  287,  288,  289,  290,  271,  272,  271,
+  272,  267,  267,  277,  267,  277,  271,  272,  271,  272,
+  286,  287,  288,  289,  290,  286,  287,  288,  289,  290,
+  264,  265,   80,   81,    0,  267,    7,   21,   68,   86,
 };
 #define YYFINAL 6
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
-#define YYMAXTOKEN 289
+#define YYMAXTOKEN 290
 #if YYDEBUG
 static const char *yyname[] = {
 
@@ -190,34 +224,46 @@ static const char *yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"T_BRACKET_BEGIN","T_BRACKET_END",
 "TCASE","TDEFAULT","TWHILE","TDO","TFOR","TIDENT","TNUMBER","TASSIGN","TSEMI",
 "TCOLON","TCOMA","TERROR","TPLUS","TMINUS","TMUL","TDIV","TMOD","TLPAREN",
-"TRPAREN","TLBRACKET","TRBRACKET","TIF","TELSE","TBREAK","TRETURN","TCONTINUE",
-"TVOID","TINT","TCHAR","TFLOAT","TDOUBLE",
+"TRPAREN","TLBRACKET","TRBRACKET","TIF","TELSE","TSWITCH","TBREAK","TRETURN",
+"TCONTINUE","TVOID","TINT","TCHAR","TFLOAT","TDOUBLE",
 };
 static const char *yyrule[] = {
 "$accept : start_symbol",
-"start_symbol : type TIDENT argument bracket_stmt",
+"start_symbol : func",
+"start_symbol : func start_symbol",
+"func : type TIDENT argument external_stmt",
+"argument : TLPAREN TRPAREN",
 "argument : TLPAREN params TRPAREN",
 "params : param",
 "params : params TCOMA param",
+"param : TVOID",
 "param : type TIDENT",
-"bracket_stmt : T_BRACKET_BEGIN statements T_BRACKET_END",
+"external_stmt : T_BRACKET_BEGIN statements T_BRACKET_END",
 "statements : statement",
 "statements : statements TSEMI statement",
-"statements : label_stmt",
-"statements : iter_stmt",
-"statements : jump_stmt",
 "statement :",
 "statement : assign_stmt",
-"label_stmt : TDEFAULT TCOLON statement",
-"label_stmt : TCASE constant TCOLON statement",
-"iter_stmt : TWHILE TLPAREN expression TRPAREN statement",
-"iter_stmt : TDO statement TWHILE TLPAREN expression TRPAREN TSEMI",
-"iter_stmt : TFOR TLPAREN expression TSEMI expression TSEMI expression TRPAREN statement",
+"statement : label_stmt",
+"statement : iter_stmt",
+"statement : jump_stmt",
+"statement : selection_stmt",
+"statement : bracket_stmt",
+"statement : init_stmt",
+"bracket_stmt : T_BRACKET_BEGIN statements T_BRACKET_END statements",
+"label_stmt : TDEFAULT TCOLON statements",
+"label_stmt : TCASE constant TCOLON statements",
+"iter_stmt : TWHILE TLPAREN expression TRPAREN statements",
+"iter_stmt : TDO statements TWHILE TLPAREN expression TRPAREN TSEMI statements",
+"iter_stmt : TFOR TLPAREN expression TSEMI expression TSEMI expression TRPAREN statements",
 "jump_stmt : TCONTINUE",
 "jump_stmt : TBREAK",
 "jump_stmt : TRETURN expression",
+"selection_stmt : TIF TLPAREN expression TRPAREN statements",
+"selection_stmt : TIF TLPAREN expression TRPAREN statements TELSE statements",
+"selection_stmt : TSWITCH TLPAREN expression TRPAREN statements",
 "assign_stmt : left_hand_side TASSIGN expression",
 "assign_stmt : left_hand_side",
+"init_stmt : type id",
 "left_hand_side : variable",
 "expression : expression TPLUS term",
 "expression : expression TMINUS term",
@@ -232,6 +278,11 @@ static const char *yyrule[] = {
 "factor : TLPAREN expression TRPAREN",
 "variable : TIDENT",
 "constant : TNUMBER",
+"id : init_id",
+"id : init_id TCOMA id",
+"init_id : TIDENT",
+"init_id : TIDENT TASSIGN TNUMBER",
+"init_id : TIDENT TASSIGN TIDENT",
 "type : TVOID",
 "type : TINT",
 "type : TCHAR",
@@ -274,7 +325,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 120 "pascal.y"
+#line 153 "pascal.y"
 
 
 main()
@@ -287,7 +338,7 @@ char *s;
 {
 	fprintf(stderr, "%s\n", s);
 }
-#line 290 "y.tab.c"
+#line 341 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -495,173 +546,241 @@ yyreduce:
     {
 case 1:
 #line 23 "pascal.y"
-	{ puts("-1.1 bracket"); }
+	{ puts("0.1. function"); }
 break;
 case 2:
-#line 27 "pascal.y"
-	{ puts("-1.2 argument"); }
+#line 24 "pascal.y"
+	{ puts("0.2 functions"); }
 break;
 case 3:
-#line 31 "pascal.y"
-	{ puts("-1.3 parameter"); }
+#line 28 "pascal.y"
+	{ puts("-1.1 bracket"); }
 break;
 case 4:
 #line 32 "pascal.y"
-	{ puts("-1.4 parameters"); }
+	{ puts("-1.2 no argument"); }
 break;
 case 5:
-#line 36 "pascal.y"
-	{ puts("-1.5 parameter"); }
+#line 33 "pascal.y"
+	{ puts("-1.3 argument"); }
 break;
 case 6:
-#line 40 "pascal.y"
-	{ puts("--2.4 bracket"); }
+#line 37 "pascal.y"
+	{ puts("-1.4 one parameter"); }
 break;
 case 7:
-#line 44 "pascal.y"
-	{ puts("---3.1. statement"); }
+#line 38 "pascal.y"
+	{ puts("-1.5 parameters"); }
 break;
 case 8:
-#line 45 "pascal.y"
-	{ puts("---3.2. statements"); }
+#line 42 "pascal.y"
+	{ puts("-1.6 parameter void "); }
 break;
 case 9:
-#line 46 "pascal.y"
-	{ puts("---3.3. label statement"); }
+#line 43 "pascal.y"
+	{ puts("-1.7 parameter detail"); }
 break;
 case 10:
 #line 47 "pascal.y"
-	{ puts("---3.4. iter statement"); }
+	{ puts("--2.1 bracket"); }
 break;
 case 11:
-#line 48 "pascal.y"
-	{ puts("---3.5. jump statement"); }
+#line 51 "pascal.y"
+	{ puts("---3.1. statement"); }
 break;
 case 12:
 #line 52 "pascal.y"
-	{ puts("----4.1. empty statement"); }
+	{ puts("---3.2. statements"); }
 break;
 case 13:
-#line 53 "pascal.y"
-	{ puts("----4.2. assign statement"); }
+#line 56 "pascal.y"
+	{ puts("----4.1. empty statement"); }
 break;
 case 14:
 #line 57 "pascal.y"
-	{ puts("----4.3. default"); }
+	{ puts("----4.2. assign statement"); }
 break;
 case 15:
 #line 58 "pascal.y"
-	{ puts("----4.4. case"); }
+	{ puts("----4.3. label statement"); }
 break;
 case 16:
-#line 62 "pascal.y"
-	{ puts("----4.5. while"); }
+#line 59 "pascal.y"
+	{ puts("----4.4. iter statement"); }
 break;
 case 17:
-#line 63 "pascal.y"
-	{ puts("----4.6. do while"); }
+#line 60 "pascal.y"
+	{ puts("----4.5. jump statement"); }
 break;
 case 18:
-#line 64 "pascal.y"
-	{ puts("----4.7. for");}
+#line 61 "pascal.y"
+	{ puts("----4.6 selection statement"); }
 break;
 case 19:
-#line 68 "pascal.y"
-	{ puts("----4.8. continue"); }
+#line 62 "pascal.y"
+	{ puts("----4.7 bracket statement"); }
 break;
 case 20:
-#line 69 "pascal.y"
-	{ puts("----4.9. break"); }
+#line 63 "pascal.y"
+	{ puts("----4.8 init statement"); }
 break;
 case 21:
-#line 70 "pascal.y"
-	{ puts("----4.10. return"); }
+#line 67 "pascal.y"
+	{ puts("-----5.1 bracket"); }
 break;
 case 22:
-#line 74 "pascal.y"
-	{ puts("-----5.1 exprssion"); }
+#line 71 "pascal.y"
+	{ puts("-----5.2. default"); }
 break;
 case 23:
-#line 75 "pascal.y"
-	{ puts("-----5.2. a;"); }
+#line 72 "pascal.y"
+	{ puts("-----5.3. case"); }
 break;
 case 24:
-#line 80 "pascal.y"
-	{ puts("------6. variable"); }
+#line 76 "pascal.y"
+	{ puts("-----5.4. while"); }
 break;
 case 25:
-#line 84 "pascal.y"
-	{ puts("-------7.1. plus"); }
+#line 77 "pascal.y"
+	{ puts("-----5.5. do while"); }
 break;
 case 26:
-#line 85 "pascal.y"
-	{ puts("-------7.2. minus"); }
+#line 78 "pascal.y"
+	{ puts("-----5.6. for");}
 break;
 case 27:
-#line 86 "pascal.y"
-	{ puts("-------7.3. term"); }
+#line 82 "pascal.y"
+	{ puts("-----5.7. continue"); }
 break;
 case 28:
-#line 90 "pascal.y"
-	{ puts("--------8.1. mul"); }
+#line 83 "pascal.y"
+	{ puts("-----5.8. break"); }
 break;
 case 29:
-#line 91 "pascal.y"
-	{ puts("--------8.2. div"); }
+#line 84 "pascal.y"
+	{ puts("-----5.9. return"); }
 break;
 case 30:
-#line 92 "pascal.y"
-	{ puts("--------8.3. mod"); }
+#line 88 "pascal.y"
+	{ puts("-----5.10 if"); }
 break;
 case 31:
-#line 93 "pascal.y"
-	{ puts("--------8.4. factor"); }
+#line 89 "pascal.y"
+	{ puts("-----5.11 if else"); }
 break;
 case 32:
-#line 97 "pascal.y"
-	{ puts("---------9.1. minus factor"); }
+#line 90 "pascal.y"
+	{ puts("-----5.12 if else"); }
 break;
 case 33:
-#line 98 "pascal.y"
-	{ puts("---------9.2. variable"); }
+#line 94 "pascal.y"
+	{ puts("-----5.13 exprssion"); }
 break;
 case 34:
-#line 99 "pascal.y"
-	{ puts("---------9.3. number"); }
+#line 95 "pascal.y"
+	{ puts("-----5.14. a;"); }
 break;
 case 35:
-#line 100 "pascal.y"
-	{ puts("---------9.4. ( )"); }
+#line 99 "pascal.y"
+	{ puts("-----5.14. initial"); }
 break;
 case 36:
-#line 104 "pascal.y"
-	{ puts("----------10.1. identifier"); }
+#line 103 "pascal.y"
+	{ puts("------6. variable"); }
 break;
 case 37:
-#line 108 "pascal.y"
-	{ puts("----------10.2. constant"); }
+#line 107 "pascal.y"
+	{ puts("-------7.1. plus"); }
 break;
 case 38:
-#line 112 "pascal.y"
-	{ puts("-----------11.1. void"); }
+#line 108 "pascal.y"
+	{ puts("-------7.2. minus"); }
 break;
 case 39:
-#line 113 "pascal.y"
-	{ puts("-----------11.2. int"); }
+#line 109 "pascal.y"
+	{ puts("-------7.3. term"); }
 break;
 case 40:
-#line 114 "pascal.y"
-	{ puts("-----------11.3. char"); }
+#line 113 "pascal.y"
+	{ puts("--------8.1. mul"); }
 break;
 case 41:
-#line 115 "pascal.y"
-	{ puts("-----------11.4. float"); }
+#line 114 "pascal.y"
+	{ puts("--------8.2. div"); }
 break;
 case 42:
+#line 115 "pascal.y"
+	{ puts("--------8.3. mod"); }
+break;
+case 43:
 #line 116 "pascal.y"
+	{ puts("--------8.4. factor"); }
+break;
+case 44:
+#line 120 "pascal.y"
+	{ puts("---------9.1. minus factor"); }
+break;
+case 45:
+#line 121 "pascal.y"
+	{ puts("---------9.2. variable"); }
+break;
+case 46:
+#line 122 "pascal.y"
+	{ puts("---------9.3. number"); }
+break;
+case 47:
+#line 123 "pascal.y"
+	{ puts("---------9.4. ( )"); }
+break;
+case 48:
+#line 127 "pascal.y"
+	{ puts("----------10.1. identifier"); }
+break;
+case 49:
+#line 131 "pascal.y"
+	{ puts("----------10.2. constant"); }
+break;
+case 50:
+#line 135 "pascal.y"
+	{ puts("----------10.3. id"); }
+break;
+case 51:
+#line 136 "pascal.y"
+	{ puts("----------10.4. id list"); }
+break;
+case 52:
+#line 140 "pascal.y"
+	{ puts("-----------10.5. init_id"); }
+break;
+case 53:
+#line 141 "pascal.y"
+	{ puts("-----------10.6. initializer"); }
+break;
+case 54:
+#line 142 "pascal.y"
+	{ puts("-----------10.7. init assign"); }
+break;
+case 55:
+#line 146 "pascal.y"
+	{ puts("-----------11.1. void"); }
+break;
+case 56:
+#line 147 "pascal.y"
+	{ puts("-----------11.2. int"); }
+break;
+case 57:
+#line 148 "pascal.y"
+	{ puts("-----------11.3. char"); }
+break;
+case 58:
+#line 149 "pascal.y"
+	{ puts("-----------11.4. float"); }
+break;
+case 59:
+#line 150 "pascal.y"
 	{ puts("-----------11.5. double"); }
 break;
-#line 664 "y.tab.c"
+#line 783 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
