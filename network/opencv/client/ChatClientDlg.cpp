@@ -163,6 +163,11 @@ void CChatClientDlg::OnSysCommand(UINT nID, LPARAM lParam)
 // 대화 상자에 최소화 단추를 추가할 경우 아이콘을 그리려면
 //  아래 코드가 필요합니다. 문서/뷰 모델을 사용하는 MFC 응용 프로그램의 경우에는
 //  프레임워크에서 이 작업을 자동으로 수행합니다.
+typedef struct cam_image{
+	int bytelen;
+	int width;
+	int height;
+};
 
 void CChatClientDlg::OnPaint()
 {
@@ -227,13 +232,13 @@ void CChatClientDlg::OnPaint()
 
 		IplImage *frame = cvLoadImage("0.jpg");
 		if(frame){
-			int bufSize = frame->imageSize;
-			int width = frame->width;
-			int height = frame->height;
-			m_cam_socket->Send(&bufSize, 4);
-			m_cam_socket->Send(&width, 4);
-			m_cam_socket->Send(&height, 4);
-			m_cam_socket->Send(frame->imageData, bufSize);
+			cam_image camData;
+			camData.bytelen = frame->imageSize;
+			camData.width = frame->width;
+			camData.height = frame->height;
+
+			m_cam_socket->Send(&camData, sizeof(camData));
+			m_cam_socket->Send(frame->imageData, camData.bytelen);
 		}
 
 
@@ -366,27 +371,23 @@ void CChatClientDlg::OnDestroy()
 
 void CChatClientDlg::CamReceive(void){
 
-	int bufSize;
-	m_cam_socket->Receive(&bufSize, 4);
-	int width;
-	m_cam_socket->Receive(&width, 4);
-	int height;
-	m_cam_socket->Receive(&height, 4);
+	cam_image camData;
+	m_cam_socket->Receive(&camData, 12);
+
 	char *buf;
-	buf = (char *) malloc(bufSize);
+	buf = (char *) malloc(camData.bytelen);
 
 	int i = 0;
 	int receiveData = 0;
-	while(receiveData < bufSize){
-		int readSize = bufSize - receiveData < 2048 ? bufSize - receiveData : 2048;
+	while(receiveData < camData.bytelen){
+		int readSize = camData.bytelen - receiveData < 2048 ? camData.bytelen - receiveData : 2048;
 		int read = m_cam_socket->Receive(buf + (i++ * 2048), readSize);
 		receiveData += read;
 	}
 
 	CvSize size;
-	size.height = width;
-	size.width = height;
-   
+	size.height = camData.height;
+	size.width = camData.width;
 	m_ImageYou = cvCreateImageHeader(size, IPL_DEPTH_8U, 3);
 	m_ImageYou->imageData = buf;
 

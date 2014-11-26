@@ -231,10 +231,10 @@ void *do_cam(void *arg)
 	int c_socket = (int)arg;
 	char chatData[2048];
 	int i, n;
+	int bufSize, width, heigth;
 
 	printf("Cam streming start\n");
-	while(1)
-	{
+	while(1){
 		memset(chatData, 0, sizeof(chatData));
 		if((n = read(c_socket, chatData, sizeof(chatData))) > 0){
 			printf("Read : %d\n", n);
