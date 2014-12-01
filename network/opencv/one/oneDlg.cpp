@@ -186,7 +186,7 @@ void ConeDlg::OnPaint()
 		params.push_back(30);
 		cv::Mat mat(m_Image);
 		std::vector<uchar> outbuf;
-		cv::imencode("jpg", mat, outbuf, params);
+		cv::imencode(".jpg", mat, outbuf, params);
 		int bytelen = outbuf.size();
 		m_cam_socket->Send(outbuf.data(), bytelen);
 

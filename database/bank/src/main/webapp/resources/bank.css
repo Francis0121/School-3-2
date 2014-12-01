@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+SECTION.bank{ width: 200px; margin : 10px; float: left;}
+SECTION.bank>ARTICLE{ width: 190px; padding: 5px 3px; border: 1px solid #808080; margin-bottom: 10px; }
+SECTION.bank>ARTICLE>HEADER{ width: 100%; text-align: center;}
+SECTION.bank>ARTICLE>HEADER>H6{ font-size: 75%; width: 100%; margin-bottom: 5px; }
+
+SECTION.bank>ARTICLE>TABLE{ border-bottom: 1px solid #808080; border-right: 1px solid #808080; width: 190px;}
+SECTION.bank>ARTICLE>TABLE>THEAD>TR{}
+SECTION.bank>ARTICLE>TABLE>THEAD>TR>TH{ font-size: 75%; border-top: 1px solid #808080; border-left: 1px solid #808080; padding: 5px 0; }
+SECTION.bank>ARTICLE>TABLE>THEAD>TR>TH:nth-child(1){ width: 93px;}
+SECTION.bank>ARTICLE>TABLE>THEAD>TR>TH:nth-child(2){ width: 94px;}
+SECTION.bank>ARTICLE>TABLE>TBODY>TR{}
+SECTION.bank>ARTICLE>TABLE>TBODY>TR>TD{ font-size: 75%; border-top: 1px solid #808080; border-left: 1px solid #808080; text-align: center; padding: 5px 0;}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bankSql">
+	
+	<resultMap type="com.kookmin.bank.repository.Branch" id="branch">
+		<result column="branch_name" property="branchName"/>
+		<result column="branch_head" property="branchHead"/>
+		<result column="address" property="address"/>
+	</resultMap>
+	
+	<resultMap type="com.kookmin.bank.repository.Client" id="client">
+		<result column="name" property="name"/>
+		<result column="balance" property="deposit.balance"/>
+		<result column="branch_name" property="deposit.branchName"/>
+	</resultMap>
+	
+	<select id="selectBranchList" resultMap="branch">
+		SELECT
+			`branch_name`, `branch_head`, `address`
+		FROM
+			`branch`
+		ORDER BY
+			`branch_name`
+	</select>
+
+	<select id="selectClient" parameterType="String" resultMap="client">
+		SELECT
+			c.`name`, SUM(d.`balance`) AS balance, d.`branch_name`
+		FROM
+			`client` AS c,
+			`deposit` AS d
+		WHERE
+			c.`ssn` = d.`ssn`
+		AND
+			d.`branch_name` = '${value}'
+		GROUP BY
+			c.`ssn`
+		ORDER BY
+			d.`branch_name`, c.`name`
+	</select>
+
+	<select id="selectEachBranchSelectClient" resultMap="client">
+		SELECT
+			c.`name`, SUM(d.`balance`) AS balance, d.`branch_name`
+		FROM
+			`client` AS c,
+			`deposit` AS d
+		WHERE
+			c.`ssn` = d.`ssn`
+		GROUP BY
+			d.`branch_name`, c.`ssn`
+		ORDER BY
+			d.`branch_name`, c.`name`
+	</select>
+	
+</mapper>
