@@ -4,10 +4,8 @@ id:
         init_id TCOMA id { puts("----------10.4. id list"); }
         ;
 
-init_id:
-        TIDENT { puts("-----------10.5. init_id"); } |
-        TIDENT = initializer { puts("-----------10.6. initializer"); }
-        ;
+
+
 
 type:
         TVOID { puts("-----------11.1. void"); } |

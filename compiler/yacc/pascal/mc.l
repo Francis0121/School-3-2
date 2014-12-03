@@ -11,6 +11,12 @@ digit	[0-9]
 
 %%
 "="	return(TASSIGN);
+"+=" return(TASPLUS);
+"-=" return(TASMINUS);
+"*=" return(TASMUL);
+"/=" return(TASDIV);
+"%=" return(TASREMAIN);
+
 "+"	return(TPLUS);
 "-" return(TMINUS);
 "*" return(TMUL);
@@ -18,6 +24,13 @@ digit	[0-9]
 ";"	return(TSEMI);
 ":" return(TCOLON);
 "," return(TCOMA);
+
+"==" return(TEQUAL);
+"!=" return(TNEQUAL);
+"<"	 return(TLESS);
+"<=" return(TLESSE);
+">"	 return(TGREAT);
+">=" return(TGREATE);
 
 \(	return(TLPAREN);
 \)	return(TRPAREN);

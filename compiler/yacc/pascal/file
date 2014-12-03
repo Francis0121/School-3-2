@@ -1,5 +1,6 @@
 int main(void){
-	do{
-		a;
-	}while(0);
+	
+	if(0){
+		b -= a;
+	}
 }

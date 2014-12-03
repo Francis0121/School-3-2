@@ -8,15 +8,18 @@
 %token  T_BRACKET_BEGIN, T_BRACKET_END
 %token  TCASE, TDEFAULT
 %token  TWHILE, TDO, TFOR
-%token	TIDENT, TNUMBER, TASSIGN, TSEMI, TCOLON, TCOMA, TERROR
+%token	TIDENT, TNUMBER, TSEMI, TCOLON, TCOMA, TERROR
 %token	TPLUS, TMINUS, TMUL, TDIV, TMOD, TLPAREN, TRPAREN, TLBRACKET, TRBRACKET
 %token 	TIF, TELSE, TSWITCH
 %token  TBREAK, TRETURN, TCONTINUE
 %token  TVOID, TINT, TCHAR, TFLOAT, TDOUBLE
+%token  TASSIGN, TASPLUS, TASMINUS, TASMUL, TASDIV, TASREMAIN
+%token  TEQUAL, TNEQUAL, TLESS, TLESSE, TGREAT, TGREATE
 
 %left TPLUS, TMINUS
 %left TMUL, TDIV
-%right TASSIGN
+%left TEQAUL, TNEQUAL, TLESS, TLESSE, TGREAT, TGREATE
+%right TASSIGN, TASPLUS, TASMINUS, TASMUL, TASDIV, TASREMAIN
 
 %%
 start_symbol:
@@ -91,12 +94,17 @@ selection_stmt:
         ;
 
 assign_stmt:
-        left_hand_side TASSIGN expression	{ puts("-----5.13 exprssion"); } |
-        left_hand_side { puts("-----5.14. a;"); } // 추가 'a;'
+        left_hand_side TASSIGN expression	{ puts("-----5.13 TASSIGN"); } |
+        left_hand_side TASPLUS expression	{ puts("-----5.14 TASPLUS"); } |
+        left_hand_side TASMINUS expression	{ puts("-----5.15 TASMINUS"); } |
+        left_hand_side TASMUL expression	{ puts("-----5.16 TASMUL"); } |
+        left_hand_side TASDIV expression	{ puts("-----5.17 TASDIV"); } |
+        left_hand_side TASREMAIN expression	{ puts("-----5.18 TASREMAIN"); } |
+        left_hand_side { puts("-----5.19. a;"); } // 추가 'a;'
 		;
 
 init_stmt:
-        type id { puts("-----5.14. initial"); }
+        type id { puts("-----5.20. initial"); }
         ;
 
 left_hand_side:
@@ -110,11 +118,21 @@ expression:
 		;
 
 term:
-        term TMUL factor	{ puts("--------8.1. mul"); } |
-        term TDIV factor	{ puts("--------8.2. div"); } |
-        term TMOD factor	{ puts("--------8.3. mod"); } |
-        factor	{ puts("--------8.4. factor"); }
+        term TMUL relation_expression	{ puts("--------8.1. mul"); } |
+        term TDIV relation_expression	{ puts("--------8.2. div"); } |
+        term TMOD relation_expression	{ puts("--------8.3. mod"); } |
+        relation_expression	{ puts("--------8.4. relation_expression"); }
 		;
+
+relation_expression:
+        relation_expression TEQUAL factor { puts("--------8.5. TEQUAL"); } |
+        relation_expression TNEQUAL factor { puts("--------8.6. TNEQUAL"); }|
+        relation_expression TLESS factor { puts("--------8.7. TLESS"); }|
+        relation_expression TLESSE factor { puts("--------8.8. TLESSE"); }|
+        relation_expression TGREAT factor { puts("--------8.9. TGREAT"); }|
+        relation_expression TGREATE factor { puts("--------8.10. TGREATE"); } |
+        factor { puts("--------8.11. factor"); }
+        ;
 
 factor:
         TMINUS factor	{ puts("---------9.1. minus factor"); } |
