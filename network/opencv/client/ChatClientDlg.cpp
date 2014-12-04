@@ -224,7 +224,7 @@ void CChatClientDlg::OnPaint()
 		m_cam_socket->Send(outbuf.data(), bytelen);*/
 
 		// ~ Extract Image Test
-		int p[3];
+		/*int p[3];
 		p[0] = CV_IMWRITE_JPEG_QUALITY;
 		p[1] = 10;
 		p[2] = 0;
@@ -237,9 +237,19 @@ void CChatClientDlg::OnPaint()
 			camData.width = frame->width;
 			camData.height = frame->height;
 
+			std::vector<int> params;
+			params.push_back(CV_IMWRITE_JPEG_QUALITY);
+			params.push_back(30);
+			cv::Mat mat(frame);
+
+			std::vector<uchar> outbuf;
+			cv::imencode("jpg", mat, outbuf, params);
+			int bytelen = outbuf.size();
+
 			m_cam_socket->Send(&camData, sizeof(camData));
 			m_cam_socket->Send(frame->imageData, camData.bytelen);
-		}
+
+		}*/
 
 
 		// CDialog::OnPaint()를 호출하지 마세요.
@@ -352,6 +362,7 @@ void CChatClientDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.	
 	cvGrabFrame(m_capture); 
 	m_Image = cvRetrieveFrame(m_capture);
+
 	Invalidate(FALSE);
 
 	CDialogEx::OnTimer(nIDEvent);
