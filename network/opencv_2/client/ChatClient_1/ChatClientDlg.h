@@ -13,7 +13,6 @@
 // ~ opencv 추가
 #include "opencv\cv.h"
 #include "opencv\highgui.h"
-#include "./CvvImage.h"
 
 // CChatClientDlg 대화 상자
 class CChatClientDlg : public CDialogEx
@@ -71,10 +70,9 @@ public:
 	CStatic m_ctrPicSend;
 	CStatic m_ctrPicRecv;
 	void CamRecieve();
-	// ~ Opencv member variable
-	IplImage* m_Image;
-	CvvImage m_cImage;
-	CvCapture* m_capture;
+	// ~ Other capture
+	cv::VideoCapture cap; 
+	cv::Mat mat; 
 	// ~ Opencv member function
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();

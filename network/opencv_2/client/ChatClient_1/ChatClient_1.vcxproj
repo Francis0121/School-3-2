@@ -109,7 +109,6 @@
     <ClInclude Include="ClientCamSocket.h" />
     <ClInclude Include="ClientSocket.h" />
     <ClInclude Include="ClientWhiteBoardSocket.h" />
-    <ClInclude Include="CvvImage.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="ImageView.h" />
     <ClInclude Include="Resource.h" />
@@ -123,7 +122,6 @@
     <ClCompile Include="ClientCamSocket.cpp" />
     <ClCompile Include="ClientSocket.cpp" />
     <ClCompile Include="ClientWhiteBoardSocket.cpp" />
-    <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="ImageView.cpp" />
     <ClCompile Include="stdafx.cpp">
