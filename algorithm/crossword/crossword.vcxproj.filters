@@ -26,5 +26,8 @@
     <None Include="word.txt">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="word2.txt">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>
