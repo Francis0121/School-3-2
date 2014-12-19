@@ -1,3 +1,8 @@
+struct point {
+	int x;
+	int y;
+};
+
 int myfunction(int varInt, char varChar, float varFloat, double varDouble){
 	int iA = 0;
 	double dA = varDouble;
@@ -36,6 +41,12 @@ int myfunction(int varInt, char varChar, float varFloat, double varDouble){
 
 	return (1);
 }
+
+struct color {
+	char r;
+	char g;
+	char b;
+};
 
 char doublefunc(void){
 	if( (a+b) <= (c*d+0)){

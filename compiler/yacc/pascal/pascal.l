@@ -57,6 +57,7 @@ char        return(TCHAR);
 float       return(TFLOAT);
 double      return(TDOUBLE);
 
+struct		return(TSTRUCT);
 
 {digit}+	return(TNUMBER);
 {letter}({letter}|{digit})*	return(TIDENT);

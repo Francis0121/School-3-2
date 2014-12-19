@@ -6,25 +6,26 @@
 %}
 
 %token  T_BRACKET_BEGIN, T_BRACKET_END
+%token  TSTRUCT
 %token  TCASE, TDEFAULT
 %token  TWHILE, TDO, TFOR
 %token	TIDENT, TNUMBER, TSEMI, TCOLON, TCOMA, TERROR
-%token	TPLUS, TMINUS, TMUL, TDIV, TMOD, TLPAREN, TRPAREN, TLBRACKET, TRBRACKET
+%token	TLPAREN, TRPAREN, TLBRACKET, TRBRACKET
 %token 	TIF, TELSE, TSWITCH
 %token  TBREAK, TRETURN, TCONTINUE
-%token  TVOID, TINT, TCHAR, TFLOAT, TDOUBLE
-%token  TASSIGN, TASPLUS, TASMINUS, TASMUL, TASDIV, TASREMAIN
-%token  TEQUAL, TNEQUAL, TLESS, TLESSE, TGREAT, TGREATE
+%token  TVOID, TINT, TCHAR, TFLOAT, TDOUBLE, TEQUAL
 
 %left TPLUS, TMINUS
-%left TMUL, TDIV
+%left TMUL, TDIV, TMOD
 %left TEQAUL, TNEQUAL, TLESS, TLESSE, TGREAT, TGREATE
 %right TASSIGN, TASPLUS, TASMINUS, TASMUL, TASDIV, TASREMAIN
 
+
 %%
 start_symbol:
-        func { puts("0.1. function"); } |
-        func start_symbol { puts("0.2 functions"); }
+        func { puts("0.1 function"); } |
+        struct start_symbol { puts("0.2 struct"); } |
+        func start_symbol { puts("0.3 functions"); }
         ;
 
 func:
@@ -166,6 +167,19 @@ type:
         TCHAR { puts("-----------11.3. char"); } |
         TFLOAT { puts("-----------11.4. float"); } |
         TDOUBLE { puts("-----------11.5. double"); }
+        ;
+
+struct:
+        TSTRUCT TIDENT T_BRACKET_BEGIN struct_declare_list T_BRACKET_END { puts("------------12.1"); } TSEMI
+        ;
+
+struct_declare_list:
+        struct_declare_list struct_declare { puts("------------12.2"); }|
+        struct_declare { puts("------------12.3"); }
+        ;
+
+struct_declare:
+        type TIDENT TSEMI { puts("------------12.4"); }
         ;
 
 %%
