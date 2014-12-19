@@ -9,7 +9,8 @@
 %token  TSTRUCT
 %token  TCASE, TDEFAULT
 %token  TWHILE, TDO, TFOR
-%token	TIDENT, TNUMBER, TSEMI, TCOLON, TCOMA, TERROR
+%token  NUMBER, FLOAT, DOUBLE, HEXA
+%token	TIDENT, TSEMI, TCOLON, TCOMA, TERROR
 %token	TLPAREN, TRPAREN, TLBRACKET, TRBRACKET
 %token 	TIF, TELSE, TSWITCH
 %token  TBREAK, TRETURN, TCONTINUE
@@ -138,8 +139,11 @@ relation_expression:
 factor:
         TMINUS factor	{ puts("---------9.1. minus factor"); } |
         variable	{ puts("---------9.2. variable"); } |
-        TNUMBER	{ puts("---------9.3. number"); } |
-        TLPAREN expression TRPAREN	{ puts("---------9.4. ( )"); }
+        NUMBER	{ puts("---------9.3. number"); } |
+        FLOAT   { puts("---------9.4. float");  } |
+        DOUBLE   { puts("---------9.5. double");  } |
+        HEXA   { puts("---------9.6. hexa");  } |
+        TLPAREN expression TRPAREN	{ puts("---------9.7. ( )"); }
 		;
 
 variable:
@@ -147,7 +151,7 @@ variable:
 		;
 
 constant:
-        TNUMBER { puts("----------10.2. constant"); }
+        NUMBER { puts("----------10.2. constant"); }
         ;
 
 id:
@@ -157,8 +161,11 @@ id:
 
 init_id:
         TIDENT { puts("-----------10.5. init_id"); } |
-        TIDENT TASSIGN TNUMBER { puts("-----------10.6. initializer"); } |
-        TIDENT TASSIGN TIDENT { puts("-----------10.7. init assign"); }
+        TIDENT TASSIGN NUMBER { puts("-----------10.6. initializer"); } |
+        TIDENT TASSIGN FLOAT { puts("-----------10.7. initializer float"); } |
+        TIDENT TASSIGN DOUBLE { puts("-----------10.8. initializer double"); } |
+        TIDENT TASSIGN HEXA { puts("-----------10.9. initializer hexa"); } |
+        TIDENT TASSIGN TIDENT { puts("-----------10.10. init assign"); }
         ;
 
 type:

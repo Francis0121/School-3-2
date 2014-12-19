@@ -59,7 +59,10 @@ double      return(TDOUBLE);
 
 struct		return(TSTRUCT);
 
-{digit}+	return(TNUMBER);
+{digit}+	return(NUMBER);
+0[xX][0-9a-fA-F]+ return(HEXA);
+{digit}+\.{digit}+[f] return(FLOAT);
+{digit}+\.{digit}+ return(DOUBLE);
 {letter}({letter}|{digit})*	return(TIDENT);
 
 [ \t\n\r]	;

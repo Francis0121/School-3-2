@@ -63,5 +63,13 @@ char doublefunc(void){
 }
 
 int main(void){
+	float f = 1.0f;
+	double b = 1.0;
+	int h = 0xff;
+	
+	if( 1.0 < 1.0f ){
+	
+	}
+
 	return (0);
 }
