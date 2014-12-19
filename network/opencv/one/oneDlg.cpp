@@ -183,10 +183,11 @@ void ConeDlg::OnPaint()
 
 		std::vector<int> params;
 		params.push_back(CV_IMWRITE_JPEG_QUALITY);
-		params.push_back(30);
-		cv::Mat mat(m_Image);
+		params.push_back(90);
+		
+		m_mMat = cvQueryFrame(m_capture);
 		std::vector<uchar> outbuf;
-		cv::imencode(".jpg", mat, outbuf, params);
+		cv::imencode(".jpg", m_mMat, outbuf, params);
 		int bytelen = outbuf.size();
 		m_cam_socket->Send(outbuf.data(), bytelen);
 

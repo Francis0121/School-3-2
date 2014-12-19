@@ -43,6 +43,7 @@ public:
 	// ~ Opencv member variable
 	IplImage* m_Image;
 	CvvImage m_cImage;
+	cv::Mat m_mMat;
 	CvCapture* m_capture;
 	// ~ Cam function
 	void CamReceive(void);

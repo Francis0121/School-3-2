@@ -3,120 +3,177 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
-// ~ 처음에 Directory를 읽는다.
-void read_dic(vector<string> &dic){
-	string line;
-	ifstream myfile ("word.txt");
+#define FILE_NAME "word2.txt"
 
-	if (myfile.is_open()){
+int colSize = 0, rowSize = 0;
+
+/**
+*	Read "dict.txt" File
+*	
+*	@param dictionary 파일을 읽어서 vector에 전부 넣는다.
+*		type : vector<string> 
+*/
+void makeDictionary(vector<string> &dic){
+	string line;
+	ifstream myfile(FILE_NAME);
+
+	if(myfile.is_open()){
 		while(myfile.good()){
-			getline (myfile,line);
+			getline(myfile, line);
+			transform(line.begin(), line.end(), line.begin(), ::toupper); // 사전을 대문자로 변경
 			dic.push_back(line);
 		}
-	}else 
-		cout << "Unable to open file"; 
+	}else{ 
+		cout << "파일을 읽을수 없습니다."; 
+	}
 
 	myfile.close();
 }
 
-// ~ grid 만들기
-void fill_grid(vector<vector<string> > &grid){
-	int m;
-	cin >> m; // matrix 행렬 차수
-	
-	vector<string> row; // 열
+/**
+*	Crossword puzzle input.txt 파일로 부터 읽어서 만들기
+*
+*	@param board 
+*		type - vector<vector<string>>
+*	@param order
+*		type - vector<vectore<int>>
+*	@param numCols
+*		type - vector<int>
+*	@param numRows
+*		type - vector<int>
+*/
+void makeBoard(vector<vector<string>> &board, vector<vector<int>> &order, vector<int> numCols, vector<int> numRows){	
+	// ~ Order
+	vector<int> rowOrder;
+	int inOrder;
+	for(int col=0; col<colSize; col++){
+		for(int row=0; row<rowSize; row++){
+			cin >> inOrder;	
+			rowOrder.push_back(inOrder);
+		}
+		order.push_back(rowOrder);
+		rowOrder.clear();
+	}
+	// ~ Board
+	vector<string> rows; 
 	string str;
-	for(int j=0; j<m; j++){
-		for(int i=0; i<m ; i++){
-			cin >> str;
-			row.push_back(str);
+	for(int col=0; col<colSize; col++){
+		cin >> str;
+		for(int row=0; row<rowSize; row++){
+			string ch;
+			ch.push_back(str.at(row));
+			rows.push_back(ch);
 		}
-		grid.push_back(row);
-		row.clear();
+		board.push_back(rows);
+		rows.clear();
+	}
+	// ~ number
+	int size, num;
+	// ~ across
+	cin >> size;
+	for(int i=0; i<size; i++){
+		cin >> num;
+		numCols.push_back(num);
+	}
+	// ~ down
+	cin >> size;
+	for(int i=0; i<size; i++){
+		cin >> num;
+		numRows.push_back(num);
 	}
 }
 
-// ~ grid 출력
-void print_grid(vector<vector<string> > grid){
-	for(int i=0;i< grid.size() ; i++){
-		for(int j=0;j<grid.size() ;j++){
-			cout<<grid[i][j]<<" ";
+/**
+*	Crossword puzzle 출력
+*	@param board
+*		type : vector<vector<string>>
+*/
+void printBoard(vector<vector<string>> board){
+
+	for(int col=0; col<colSize; col++){
+		for(int row=0; row<rowSize; row++){
+			cout << board[col][row];
 		}
-		cout<<endl;
+		cout << endl;
 	}
 }
 
-bool empty_unit(vector< vector<string> > grid,vector<int> v){
+/**
+*	"?" 빈칸이라면
+*/
+bool isEmpty(vector<vector<string>> board, vector<int> v){
 
+	// ~ 수평에 있는 경우
 	if(v[2] == 1){
-       for(int i = 0; i < v[3]; i++)
-            if (grid[v[0]][i+v[1]] == "_")
+       for(int i = 0; i < v[3]; i++){
+            if (board[v[0]][i+v[1]] == "?")
                 return true;
+	   }
     }
 
+	// ~ 수직에 있는 경우
     if(v[2] == -1){
-       for(int i = 0; i < v[3]; i++)
-            if (grid[i+v[0]][v[1]] == "_")
+       for(int i = 0; i < v[3]; i++){
+            if (board[i+v[0]][v[1]] == "?")
                 return true;
+	   }
     }
 
     return false;
 }
 
-vector<int> find_slot(vector< vector<string> > grid)
-{
+/**
+*	수평적 수직적인 cross word 라인을 찾는다
+*/
+vector<int> findLine(vector<vector<string>> board){
 
-	int n = grid.size();
+	for(int col=0; col<colSize; col++) {
 
-	for(int i = 0; i < n; i++) {
+		for (int row=0; row<rowSize; row++) {
 
-        for ( int j = 0; j < n ;j++) {
+			if (board[col][row] != "*") { 
 
-			if (grid[i][j] != "*") { 
-
-				//Horizontal search for slots
-				for (int k =j ;k< n; k++) {
-					
-					if (grid [i][k] == "*" || k == n-1){
+				// ~ 수평적으로 slot 찾음
+				for (int k=row; k<rowSize; k++) {
+					if (board[col][k] == "*" || k == rowSize-1){
 						vector<int> v;
-						int l = k - j + 1;
-						if (grid[i][k] == "*" ) 
-							l = k -j;
-
+						int l = k - row + 1;
+						if (board[col][k] == "*") 
+							l = k - row;
 						
-						if (l > 1 ) {
-							v.push_back(i);
-							v.push_back(j);
+						if (l>1) {
+							v.push_back(col);
+							v.push_back(row);
 							v.push_back(1);
 							v.push_back(l);
-							if (empty_unit(grid,v))
+							if (isEmpty(board, v))
 							    return v;
 						}
 						break;
 					}
 				}
 
-				//Vertical search for slots
-				for (int k =i ;k< n; k++) {
-					if ((grid [k][j] == "*" ) || k == n-1){
+				// ~ 수직적으로 slot 찾음
+				for (int k=col; k<colSize; k++) {
+					if ((board [k][row] == "*" ) || k == colSize-1){
 						vector<int> v;
-						int l = k-i+1;
-						if (grid[k][j] == "*" ) l = k -i;
-						if ( l >1){
-							v.push_back(i);
-							v.push_back(j);
+						int l = k - col + 1;
+						if (board[k][row] == "*" ) l = k-col;
+						if (l>1){
+							v.push_back(col);
+							v.push_back(row);
 							v.push_back(-1);
 							v.push_back(l);
-							if (empty_unit(grid,v))
+							if (isEmpty(board, v))
 							    return v;
 						}
 						break;
 					}
 				}
-				
 			}
 		}
 	}
@@ -131,253 +188,300 @@ vector<int> find_slot(vector< vector<string> > grid)
 	return v;
 }
 
-string get_str(vector<vector<string> > grid, vector<int> v){
+/**
+*	crowss word 판으로 부터 word를 얻어온다.
+*/
+string getWord(vector<vector<string>> board, vector<int> v){
     string word= "";
-    if(v[2] == 1){
-       for(int i = 0; i < v[3]; i++)
-
-            word+=grid[v[0]][i+v[1]];
+	// ~ 수평에 있는 경우
+    if(v[2] == 1){ 
+       for(int i = 0; i < v[3]; i++){
+            word+=board[v[0]][i+v[1]];
+	   }
     }
 
+	// ~ 수직에 있는 경우
     if(v[2] == -1){
-       for(int i = 0; i < v[3]; i++)
-            word+=grid[v[0]+i][v[1]];
+       for(int i = 0; i < v[3]; i++){
+            word+=board[v[0]+i][v[1]];
+	   }
     }
+	//cout << "Get Word : " << word << endl;
     return word;
-
 }
 
-vector<string> get_words(vector<string> dic ,string s) {
-	
-	
+/**
+*	사전에서 word에서 빈칸 포함되는 단어를 찾는다.
+*/
+vector<string> findWords(vector<string> dic, string s) {
 	vector<string> list;
-    for (int i=0;i< dic.size();i++){
-		int flag = 1;
-		if ( dic[i].size() == s.size()+1){
-			
-			for(int j=0; j < s.size(); j++ ){
-		if (s[j] != dic[i][j] && s[j] != '_') {
 
-					flag = 0;
+    for (int i=0; i<dic.size(); i++){
+		int flag = true;
+		if (dic[i].size() == s.size()){	
+			for(int j=0; j<s.size(); j++){
+				if (s[j] != dic[i][j] && s[j] != '?') {
+					flag = false;
 					break;
 				}
 			}
+
 			if (flag){
-				list.push_back(dic[i]);
-				
+				list.push_back(dic[i]);	
 			}
 		}
-	
 	}
-	return list;
 
+	return list;
 }
 
-bool only_one_blank(int a,int b, int c, vector<vector<string> > grid)
-{
+/**
+*	빈칸이 하나라면?	
+*
+*	@param col
+*		type - col 
+*	@param row
+*		type - int
+*	@param direction 
+*		type - int : 1 = Horizontal, -1 = Vertical
+*	@param board
+*		type - vector<vector<string>> : cross word board
+*/
+bool isOneBlank(int col, int row, int direction, vector<vector<string>> &board){
 	int count=0;
-
-	if( c == 1) {
-		for( int i = a-1; i >= 0; i--) {
-			if(grid[i][b][0] == '_')
+	// ~ 수평적
+	if(direction == 1) {
+		for(int i=col-1; i>= 0; i--) {
+			if(board[i][row][0] == '?')
 				count++;
-			if( grid[i][b][0] == '*')
+			if(board[i][row][0] == '*')
 				break;
 		}
-		for( int i = a+1; i < grid.size(); i++ ) {
-			if( grid[i][b][0] == '_')
+		for(int i=col+1; i<colSize; i++) {
+			if(board[i][row][0] == '?')
 				count++;
-			if( grid[i][b][0] == '*')
+			if(board[i][row][0] == '*')
 				break;
 		}
-		if( count > 0 ) { 
+		if(count > 0) { 
 			return false;
 		}
 	}
-
-	if( c == -1) {
-		for( int i = b-1; i >= 0; i--) {
-			if(grid[a][i][0] == '_')
+	// ~ 수직적
+	if(direction==-1) {
+		for(int i=row-1; i>=0; i--) {
+			if(board[col][i][0] == '?')
 				count++;
-			if ( grid[a][i][0] == '*')
+			if(board[col][i][0] == '*')
 				break;
 		}
-		for( int i = b+1; i < grid.size(); i++ ) {
-			if( grid[a][i][0] == '_')
+		for(int i=row+1; i<rowSize; i++ ) {
+			if(board[col][i][0] == '?')
 				count++;
-			if ( grid[a][i][0] == '*')
+			if (board[col][i][0] == '*')
 				break;
 		}
-		if( count > 0 ) {
+		if(count > 0) {
 			return false;
 		}
 	}
 	return true;
 }
-bool find_dic(string s,vector<string> dic)
-{
 
-	for( int i =0; i < dic.size(); i++){
+/**
+*	기존 사전에 만든 단어가 있는지 존재 여부 확인
+*	@param
+*		type string : 만든 단어
+*	@param
+*		type vector<string> : 원래 사전
+*/
+bool confirmDic(string s, vector<string> &dic){
+
+	for(int i=0; i<dic.size(); i++){
 		string temp;
-		for( int j =0;j<s.size();j++){
-			temp.push_back(dic[i][j]);
-					
+		for(int j=0; j<s.size(); j++){
+			temp.push_back(dic[i][j]);		
 		}
-		if( temp == s) {
 
+		if(temp == s) {
 			return true;
 		}
 	}
 	return false;
-
 }
-string reverse_string(string s){
+
+/**
+*	스트링 순서 재배열
+*	@param
+*		type - string : 받는 문자열
+*	@return
+*		type - string
+*/
+string strReverse(string s){
 	string ans;
-	for(int i=s.size()-1;i>=0;i--){
+	for(int i=s.size()-1; i>=0; i--){
 		ans.push_back(s[i]);
 	}
 	return ans;
 }
-bool check_existence(int a, int b, int c ,vector<vector<string> > grid, char s,vector<string> dic)
-{
+
+/**
+*	빈칸이 하나라면?	
+*
+*	@param col
+*		type - col 
+*	@param row
+*		type - int
+*	@param direction 
+*		type - int : 1 = Horizontal, -1 = Vertical
+*	@param board
+*		type - vector<vector<string>> : cross word board
+*	@param s
+*		type - char
+*	@param dic
+*		type - vector<string> 
+*/
+bool strCheck(int col, int row, int direction, vector<vector<string>> &board, char s, vector<string> &dic){
 	string word;
 	string pre;
-	if( c == 1) {
-		for( int i = a-1; i >= 0; i--) {
-			if(grid[i][b][0] != '*')
-				pre.push_back(grid[i][b][0]);
+	// ~ 수평적
+	if(direction==1) {
+		for(int i=col-1; i>=0; i--) {
+			if(board[i][row][0] != '*')
+				pre.push_back(board[i][row][0]);
 			else
 				break;
 		}
 		word.push_back(s);
-		for( int i = a+1; i < grid.size(); i++ ) {
-			if(grid[i][b][0] !='*')
-				word.push_back(grid[i][b][0]);
+		for(int i=col+1; i<colSize; i++) {
+			if(board[i][row][0] !='*')
+				word.push_back(board[i][row][0]);
 			else
 				break;
 		}
-		word = reverse_string(pre)+ word;
-		if( find_dic(word,dic) ) { 
+		word = strReverse(pre)+ word;
+		// ~ 단어가 있는지 확인
+		if(confirmDic(word, dic)) { 
 			return true;
 		}
 	}
-	if( c == -1) {
-		for( int i = b-1; i >= 0; i--) {
-			if(grid[a][i][0] != '*')
-				pre.push_back(grid[a][i][0]);
+
+	// ~ 수직적
+	if(direction==-1) {
+		for(int i=row-1; i>=0; i--) {
+			if(board[col][i][0] != '*')
+				pre.push_back(board[col][i][0]);
 			else
 				break;
 		}
 		word.push_back(s);
-		for( int i = b+1; i < grid.size(); i++ ) {
-			if(grid[a][i][0] != '*')
-				word.push_back(grid[a][i][0]);
+		for(int i=row+1; i < rowSize; i++ ) {
+			if(board[col][i][0] != '*')
+				word.push_back(board[col][i][0]);
 			else
 				break;
-			
 		}
-		word = reverse_string(pre) + word;
-		if( find_dic(word,dic) ) { 
+		word = strReverse(pre) + word;
+		// ~ 단어가 있는지 확인
+		if(confirmDic(word, dic)) { 
 			return true;
 		}
 	}
+
 	return false;
-
-
 }
 
-int enter_in_grid(string s, vector<int> v , vector<vector<string> >  &grid,vector<string> dic) {
+/**
+*	Board
+*/
+int fillBoardFromWords(string s, vector<int> v, vector<vector<string>> &board, vector<string> dic) {
+	// ~ 수평적
     if(v[2] == 1){
-       for(int i = 0; i < v[3]; i++) {
-	    if( grid[v[0]][i+v[1]][0] == '_'){
-		    if ( only_one_blank(v[0], v[1] + i, 1, grid) )
-		       if( ! check_existence(v[0],v[1]+i,1,grid,s[i],dic)) return -1;
-	    }
-            grid[v[0]][i+v[1]] = s[i];
-       }
-            	
+		for(int i=0; i<v[3]; i++) {
+			if (board[v[0]][i+v[1]][0] == '?') {
+				if (isOneBlank(v[0], v[1]+i, 1, board) )
+					if (!strCheck(v[0], v[1]+i, 1, board, s[i], dic)) 
+						return -1;
+			}
+            board[v[0]][i+v[1]] = s[i];
+       }	
     }
 
+	// ~ 수직적
     if(v[2] == -1){
-       for(int i = 0; i < v[3]; i++) {
-	    if( grid[v[0]+i][v[1]][0] == '_'){
-		    if ( only_one_blank(v[0]+i, v[1], -1, grid) )
-		       if ( ! check_existence(v[0]+i,v[1],-1,grid,s[i],dic)) return -1;
-	    }
-            grid[i+v[0]][v[1]] = s[i];
-       }
+		for(int i=0; i<v[3]; i++) {
+			if (board[v[0]+i][v[1]][0] == '?'){
+				if (isOneBlank(v[0]+i, v[1], -1, board) )
+					if (!strCheck(v[0]+i, v[1], -1, board, s[i], dic)) 
+						return -1;
+			}
+            board[i+v[0]][v[1]] = s[i];
+		}
     }
-return 0;
+	
+	return 0;
 }
 
-	
-void find_solution(vector<vector<string> > grid, vector<string> dic) {
+/**
+*	Cross word 풀기
+*/
+int solveCrossword(vector<vector<string>> &board, vector<string> dic) {
 
-	vector<int> v;
-    v = find_slot(grid);
+	vector<int> v = findLine(board);
 	if (v[0] == -1 && v[1] == -1 && v[2] == -1 && v[3] == -1){
-		print_grid(grid);
-		cout<<"Completed!"<<endl;
-		exit(1) ;
+		//exit(1);
+		return 2;
 	}
-    string word = get_str(grid, v);
 
-    vector<string> list_words;
+    string word = getWord(board, v);
+    vector<string> words = findWords(dic, word);
 
-    list_words = get_words(dic,word );
+	while (!words.empty()) {
 
-	//Prints all the words
-#ifdef LIST
-    	cout << "Word >> " << word << endl;
-	cout<< "List of words for "<< word << endl;
-	for( int i =0 ;i< list_words.size(); i++){
-		cout << i+1 << " " << list_words[i] << endl;
-	}
-#endif    
-	int no_of_matches = list_words.size();
-	while ( !list_words.empty() ) {
-#ifdef CURR
-		cout <<"CURRENT_WORD >>>>>>>>>> " << list_words.back()<<endl;
-#endif
-	
-		if(enter_in_grid (list_words.back(), v, grid,dic) == -1) {
-			list_words.pop_back();
-#ifdef DEBUG	
-			print_grid(grid);
-#endif
+		//cout << "CURRENT_WORD >>>>>>>>>> " << words.back() << endl;
 
+		if(fillBoardFromWords(words.back(), v, board, dic) == -1) {
+			words.pop_back();
+			//printBoard(board);
 			continue;
 		}
 		else{
-#ifdef DEBUG		
+			//printBoard(board);
+			words.pop_back();
+		} 
 
-		print_grid(grid);
-#endif
-			list_words.pop_back();
+		int flag = solveCrossword(board, dic);
+		if(flag == 2){
+			return 2;
 		}
-		find_solution(grid, dic);
 	}
-	return;
-	
-	
+	return 1;
 }	
 
-int main()
-{
+int main(){
+	// ~ FILE_NAME 을 읽고 vector로 Dictionary 을 만든다.
+	vector<string> dic;
+	makeDictionary(dic); 								
 
-	vector <string> dic;
-	vector <vector <string> > grid;
-	
-	read_dic(dic); 									//read word.txt to generate a vector of words
-    fill_grid(grid);								//inputs the square grid saving  it in vector of vector of string
-						
-    find_solution(grid,dic);							
-	print_grid(grid);
-	
+	int numTestCase;
+	cin >> numTestCase;
+
+	// ~ cross word 알고리즘 시작
+	vector<vector<int>> order;
+	vector<vector<string>> board;
+	vector<int> numCols, numRows;
+	for(int i=0; i<numTestCase; i++){
+		// ~ colSize, rowSize 는 전역변수
+		cin >> colSize >> rowSize;						
+		makeBoard(board, order, numCols, numRows);				
+		if(solveCrossword(board, dic)){
+			printBoard(board);
+		}
+		order.clear();
+		board.clear();
+		numCols.clear();
+		numRows.clear();
+	}
+
     return 0;
 }
-
-	
-
-
-
